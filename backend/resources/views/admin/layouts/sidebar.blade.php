@@ -1,0 +1,13 @@
+<!-- /resources/views/admin/layouts/sidebar.blade.php -->
+<aside class="sidebar">
+  <div class="logo">Admin Panel</div>
+  <div class="menu">
+    <ul>
+        <li><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+        <li><a href="{{ route('admin.rewards') }}">Manage Rewards</a></li>
+        <li><a href="{{ route('admin.users') }}">Manage Users</a></li>
+        <li><a href="{{ route('admin.logs') }}">View Logs</a></li>
+        <li><a href="{{ route('admin.settings') }}">Settings</a></li>
+    </ul>
+  </div>
+</aside>
