@@ -14,20 +14,22 @@ Route::get('/reward-history', [App\Http\Controllers\IndexController::class, 'red
 Route::get('/terms-and-conditions', [App\Http\Controllers\IndexController::class, 'termConditions'])->name('terms-and-conditions');
 Route::get('/private-policy', [App\Http\Controllers\IndexController::class, 'privatePolicy'])->name('privacy-policy');
 
+
+
+
 Route::get('/login', [App\Http\Controllers\IndexController::class, 'login'])->name('login');
 Route::get('/register', [App\Http\Controllers\IndexController::class, 'register'])->name('register');
 
 
 
-
-
-
-
 #Admin Routes
 
-Route::get('/dashboard', [App\Http\Controllers\AdminController::class, 'adminDashboard'])->name('dashboard');
-Route::get('/admin-settings', [App\Http\Controllers\AdminController::class, 'adminSettings'])->name('admin-settings');
-Route::get('/manage-user', [App\Http\Controllers\AdminController::class, 'manageUser'])->name('manage-user');
-Route::get('/manage-reward', [App\Http\Controllers\AdminController::class, 'managerReward'])->name('manage-reward');
-Route::get('/admin-user-log', [App\Http\Controllers\AdminController::class, 'adminUserLog'])->name('admin-user-log');
-Route::get('/api-documentation', [App\Http\Controllers\AdminController::class, 'apiDocumentation'])->name('api-documentation');
+# Admin Routes
+Route::prefix('admin')->group(function () {
+    Route::get('/dashboard', [App\Http\Controllers\AdminController::class, 'adminDashboard'])->name('admin.dashboard');
+    Route::get('/settings', [App\Http\Controllers\AdminController::class, 'adminSettings'])->name('admin.settings');
+    Route::get('/manage-user', [App\Http\Controllers\AdminController::class, 'manageUser'])->name('admin.users');
+    Route::get('/manage-reward', [App\Http\Controllers\AdminController::class, 'managerReward'])->name('admin.rewards');
+    Route::get('/user-log', [App\Http\Controllers\AdminController::class, 'adminUserLog'])->name('admin.logs');
+    Route::get('/api-documentation', [App\Http\Controllers\AdminController::class, 'apiDocumentation'])->name('admin.api');
+});
