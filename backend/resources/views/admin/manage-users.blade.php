@@ -17,6 +17,7 @@
         <table class="user-table">
             <thead>
                 <tr>
+                    <th>ID</th>
                     <th>Name</th>
                     <th>Email</th>
                     <th>Role</th>
@@ -26,6 +27,7 @@
             </thead>
             <tbody id="users-list">
                 <tr>
+                    <td>1</td>
                     <td>John Doe</td>
                     <td>john.doe@example.com</td>
                     <td>User</td>
@@ -36,6 +38,7 @@
                     </td>
                 </tr>
                 <tr>
+                    <td>2</td>
                     <td>Jane Smith</td>
                     <td>jane.smith@example.com</td>
                     <td>User</td>
@@ -46,6 +49,7 @@
                     </td>
                 </tr>
                 <tr>
+                    <td>3</td>
                     <td>Admin User</td>
                     <td>admin@example.com</td>
                     <td class="text-purple-600 font-semibold">Admin</td>

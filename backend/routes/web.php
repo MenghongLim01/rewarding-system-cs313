@@ -17,20 +17,43 @@ Route::get('/private-policy', [App\Http\Controllers\IndexController::class, 'pri
 
 
 
-Route::get('/login', [App\Http\Controllers\IndexController::class, 'login'])->name('login');
-Route::get('/register', [App\Http\Controllers\IndexController::class, 'register'])->name('register');
+// Route::get('/login', [App\Http\Controllers\IndexController::class, 'login'])->name('login');
+// Route::get('/register', [App\Http\Controllers\IndexController::class, 'register'])->name('register');
 
 
 
-#Admin Routes
+// #Admin Routes log
+// Route::get('/admin/login', [App\Http\Controllers\AdminAuthController::class, 'showLoginForm'])->name('admin.login');
+// Route::post('/admin/login', [App\Http\Controllers\AdminAuthController::class, 'login'])->name('admin.login.submit');
 
-# Admin Routes
+
+// # Admin Routes
+// Route::prefix('admin')->middleware('auth:admin')->group(function () {
+//     Route::get('/dashboard', [App\Http\Controllers\AdminController::class, 'adminDashboard'])->name('admin.dashboard');
+//     Route::get('/settings', [App\Http\Controllers\AdminController::class, 'adminSettings'])->name('admin.settings');
+//     Route::get('/manage-user', [App\Http\Controllers\AdminController::class, 'manageUser'])->name('admin.users');
+//     Route::get('/manage-reward', [App\Http\Controllers\AdminController::class, 'managerReward'])->name('admin.rewards');
+//     Route::get('/user-log', [App\Http\Controllers\AdminController::class, 'adminUserLog'])->name('admin.logs');
+//     Route::get('/api-documentation', [App\Http\Controllers\AdminController::class, 'apiDocumentation'])->name('admin.api');
+//     Route::get('/manage-staffs', [App\Http\Controllers\AdminController::class, 'manageStaffs'])->name('staffs');
+
+//     Route::post('/admin/logout', [App\Http\Controllers\AdminAuthController::class, 'logout'])->name('admin.logout');
+// });
 Route::prefix('admin')->group(function () {
-    Route::get('/dashboard', [App\Http\Controllers\AdminController::class, 'adminDashboard'])->name('admin.dashboard');
-    Route::get('/settings', [App\Http\Controllers\AdminController::class, 'adminSettings'])->name('admin.settings');
-    Route::get('/manage-user', [App\Http\Controllers\AdminController::class, 'manageUser'])->name('admin.users');
-    Route::get('/manage-reward', [App\Http\Controllers\AdminController::class, 'managerReward'])->name('admin.rewards');
-    Route::get('/user-log', [App\Http\Controllers\AdminController::class, 'adminUserLog'])->name('admin.logs');
-    Route::get('/api-documentation', [App\Http\Controllers\AdminController::class, 'apiDocumentation'])->name('admin.api');
-    Route::get('/manage-staffs', [App\Http\Controllers\AdminController::class, 'manageStaffs'])->name('staffs');
+    Route::get('/login', [App\Http\Controllers\AdminAuthController::class, 'showLoginForm'])->name('admin.login');
+    Route::post('/login', [App\Http\Controllers\AdminAuthController::class, 'login'])->name('admin.login.submit');
+
+    
+    Route::middleware('auth:admin')->group(function () {
+        
+        Route::get('/dashboard', [App\Http\Controllers\AdminController::class, 'adminDashboard'])->name('admin.dashboard');
+        Route::get('/settings', [App\Http\Controllers\AdminController::class, 'adminSettings'])->name('admin.settings');
+        Route::get('/manage-user', [App\Http\Controllers\AdminController::class, 'manageUser'])->name('admin.users');
+        Route::get('/manage-reward', [App\Http\Controllers\AdminController::class, 'managerReward'])->name('admin.rewards');
+        Route::get('/user-log', [App\Http\Controllers\AdminController::class, 'adminUserLog'])->name('admin.logs');
+        Route::get('/api-documentation', [App\Http\Controllers\AdminController::class, 'apiDocumentation'])->name('admin.api');
+        Route::get('/manage-staffs', [App\Http\Controllers\AdminController::class, 'manageStaffs'])->name('staffs');
+
+        Route::post('/admin/logout', [App\Http\Controllers\AdminAuthController::class, 'logout'])->name('admin.logout');
+    });
 });
