@@ -75,5 +75,14 @@ class AdminController extends Controller
 
         return view('admin.manage-staffs', compact('data'));
     }
+    public function processCustomerOrders()
+    {
+        $data = [
+            'title' => 'Process Customer Orders',
+            'active' => 'process-customer-orders',
+        ];
+
+        return view('admin.process-customer-orders', compact('data'));
+    }
 
 }
