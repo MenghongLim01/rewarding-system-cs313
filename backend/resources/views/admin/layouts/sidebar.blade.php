@@ -8,6 +8,8 @@
         <li><a href="{{ route('admin.users') }}">Manage Users</a></li>
         <li><a href="{{ route('admin.logs') }}">View Logs</a></li>
         <li><a href="{{ route('admin.settings') }}">Settings</a></li>
+        
+        <li><a href="{{ route('staffs') }}">Manage Staffs</a></li>
     </ul>
   </div>
 </aside>

@@ -66,6 +66,14 @@ class AdminController extends Controller
 
         return view('admin.api-docs', compact('data'));
     }
+    public function manageStaffs()
+    {
+        $data = [
+            'title' => 'Manage Staffs',
+            'active' => 'manage-staffs',
+        ];
 
+        return view('admin.manage-staffs', compact('data'));
+    }
 
 }

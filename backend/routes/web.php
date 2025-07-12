@@ -32,4 +32,5 @@ Route::prefix('admin')->group(function () {
     Route::get('/manage-reward', [App\Http\Controllers\AdminController::class, 'managerReward'])->name('admin.rewards');
     Route::get('/user-log', [App\Http\Controllers\AdminController::class, 'adminUserLog'])->name('admin.logs');
     Route::get('/api-documentation', [App\Http\Controllers\AdminController::class, 'apiDocumentation'])->name('admin.api');
+    Route::get('/manage-staffs', [App\Http\Controllers\AdminController::class, 'manageStaffs'])->name('staffs');
 });
