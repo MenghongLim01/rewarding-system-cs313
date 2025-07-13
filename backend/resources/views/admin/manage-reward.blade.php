@@ -29,6 +29,9 @@
                                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Description
                                 </th>
+                                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider rounded-tr-lg">
+                                    Company Name
+                                </th>
                                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Points Required
                                 </th>
@@ -45,6 +48,7 @@
                             <tr class="hover:bg-gray-50" data-id="1">
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Exclusive Discount Voucher</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">Get 20% off your next purchase!</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Phara Com</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">500</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Unlimited</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
@@ -52,26 +56,7 @@
                                     <button class="delete-reward-button text-red-600 hover:text-red-900" data-id="1">Delete</button>
                                 </td>
                             </tr>
-                            <tr class="hover:bg-gray-50" data-id="2">
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Premium Content Access</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">Unlock exclusive articles and videos for a month.</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">800</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">50</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <button class="edit-reward-button text-indigo-600 hover:text-indigo-900 mr-4" data-id="2">Edit</button>
-                                    <button class="delete-reward-button text-red-600 hover:text-red-900" data-id="2">Delete</button>
-                                </td>
-                            </tr>
-                            <tr class="hover:bg-gray-50" data-id="3">
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Personalized Coaching Session</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">A 30-minute 1-on-1 session with an expert.</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">1200</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">5</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <button class="edit-reward-button text-indigo-600 hover:text-indigo-900 mr-4" data-id="3">Edit</button>
-                                    <button class="delete-reward-button text-red-600 hover:text-red-900" data-id="3">Delete</button>
-                                </td>
-                            </tr>
+                            
                         </tbody>
                     </table>
                 </div>

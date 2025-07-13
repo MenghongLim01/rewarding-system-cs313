@@ -110,6 +110,19 @@
                 <input type="password" id="confirm-password" name="confirm-password" required
                        class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500 sm:text-sm">
             </div>
+            
+            <div>
+                <label for="company" class="block text-sm font-medium text-gray-700 mb-1">Select Company</label>
+                <select id="company" name="company" required
+                        class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500 sm:text-sm">
+                    <option value="" disabled selected>-- Choose a company --</option>
+                    <option value="Phka Blush">Phka Blush</option>
+                    <option value="Siem Reap Tech">Siem Reap Tech</option>
+                    <option value="Angkor Craft">Angkor Craft</option>
+                </select>
+            </div>
+
+
             <div class="flex items-center">
                 <input id="terms-checkbox" name="terms-checkbox" type="checkbox" required
                        class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded">

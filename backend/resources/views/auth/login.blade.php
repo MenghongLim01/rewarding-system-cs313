@@ -100,11 +100,14 @@
                 <input type="password" id="password" name="password" required
                        class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500 sm:text-sm">
             </div>
-            <div class="flex items-center justify-between">
+
+            <!-- If u have time do it later / We dont have time for that  -->
+
+            <!-- <div class="flex items-center justify-between">
                 <div class="text-sm">
                     <a href="/forgot-password" class="font-medium text-purple-600 hover:text-purple-500">Forgot your password?</a>
                 </div>
-            </div>
+            </div> -->
             <div>
                 <button type="submit"
                         class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition duration-300">
@@ -112,30 +115,7 @@
                 </button>
             </div>
         </form>
-
-        <!-- SSO Integration (Optional) -->
-        <div class="mt-6">
-            <div class="relative">
-                <div class="absolute inset-0 flex items-center">
-                    <div class="w-full border-t border-gray-300"></div>
-                </div>
-                <div class="relative flex justify-center text-sm">
-                    <span class="px-2 bg-white text-gray-500">Or continue with</span>
-                </div>
-            </div>
-
-            <div class="mt-6 grid grid-cols-1 gap-3">
-                <div>
-                    <button type="button"
-                            class="w-full flex items-center justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition duration-300">
-                        <img src="https://www.svgrepo.com/show/303108/google-icon-logo.svg" class="h-5 w-5 mr-2" alt="Google icon">
-                        Sign in with Google
-                    </button>
-                </div>
-                <!-- Add more SSO options as needed -->
-            </div>
-        </div>
-
+          
         <!-- Registration Link -->
         <div class="mt-8 text-center text-sm text-gray-600">
             Don't have an account?
@@ -153,54 +133,7 @@
         </div>
     </div>
 
-    <script>
-        // Get elements
-        const loginForm = document.getElementById('login-form');
-        const rewardModal = document.getElementById('rewardModal');
-        const modalTitle = document.getElementById('modal-title');
-        const modalMessage = document.getElementById('modal-message');
-
-        // Function to open the modal
-        function openModal(title, message) {
-            modalTitle.textContent = title;
-            modalMessage.textContent = message;
-            rewardModal.style.display = 'flex'; // Use flex to center content
-        }
-
-        // Function to close the modal
-        function closeModal() {
-            rewardModal.style.display = 'none';
-        }
-
-        // Handle form submission
-        loginForm.addEventListener('submit', (event) => {
-            event.preventDefault(); // Prevent default form submission
-
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-
-            // Basic validation (replace with actual authentication logic)
-            if (email === '' || password === '') {
-                openModal('Login Error', 'Please enter both email/username and password.');
-            } else {
-                // In a real application, you would send this data to your backend for authentication.
-                // For demonstration, we'll simulate a successful login.
-                console.log('Attempting to log in with:', { email, password });
-                openModal('Login Successful!', 'You have been logged in. Redirecting to dashboard...');
-                // Simulate redirection after a short delay
-                setTimeout(() => {
-                    window.location.href = '/dashboard'; // Redirect to dashboard
-                }, 1500);
-            }
-        });
-
-        // Close modal when clicking outside of it
-        window.addEventListener('click', (event) => {
-            if (event.target == rewardModal) {
-                closeModal();
-            }
-        });
-    </script>
+    
 </body>
 </html>
 

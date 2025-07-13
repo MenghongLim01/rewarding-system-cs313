@@ -30,11 +30,38 @@ Route::controller(IndexController::class)->group(function () {
 | Admin Authentication Routes
 |--------------------------------------------------------------------------
 */
+// Route::prefix('admin')->group(function () {
+//     Route::get('/login', [AdminAuthController::class, 'showLoginForm'])->name('admin.login');
+//     Route::post('/login', [AdminAuthController::class, 'login'])->name('admin.login.submit');
+
+//     Route::middleware('auth:admin')->group(function () {
+//         Route::get('/dashboard', [AdminController::class, 'adminDashboard'])->name('admin.dashboard');
+//         Route::get('/settings', [AdminController::class, 'adminSettings'])->name('admin.settings');
+//         Route::get('/manage-user', [AdminController::class, 'manageUser'])->name('admin.users');
+//         Route::get('/manage-reward', [AdminController::class, 'managerReward'])->name('admin.rewards');
+//         Route::get('/user-log', [AdminController::class, 'adminUserLog'])->name('admin.logs');
+//         Route::get('/api-documentation', [AdminController::class, 'apiDocumentation'])->name('admin.api');
+//         Route::get('/manage-staffs', [AdminController::class, 'manageStaffs'])->name('staffs');
+//         Route::post('/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
+//     });
+// });
+
+/*
+|--------------------------------------------------------------------------
+| Misc Routes
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/process-customer-orders', [AdminController::class, 'processCustomerOrders'])->name('process-customer-orders');
+
+
+// without Authentication
+
 Route::prefix('admin')->group(function () {
     Route::get('/login', [AdminAuthController::class, 'showLoginForm'])->name('admin.login');
     Route::post('/login', [AdminAuthController::class, 'login'])->name('admin.login.submit');
 
-    Route::middleware('auth:admin')->group(function () {
+    
         Route::get('/dashboard', [AdminController::class, 'adminDashboard'])->name('admin.dashboard');
         Route::get('/settings', [AdminController::class, 'adminSettings'])->name('admin.settings');
         Route::get('/manage-user', [AdminController::class, 'manageUser'])->name('admin.users');
@@ -43,12 +70,5 @@ Route::prefix('admin')->group(function () {
         Route::get('/api-documentation', [AdminController::class, 'apiDocumentation'])->name('admin.api');
         Route::get('/manage-staffs', [AdminController::class, 'manageStaffs'])->name('staffs');
         Route::post('/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
-    });
+    
 });
-
-/*
-|--------------------------------------------------------------------------
-| Misc Routes
-|--------------------------------------------------------------------------
-*/
-Route::get('/process-customer-orders', [AdminController::class, 'processCustomerOrders'])->name('process-customer-orders');

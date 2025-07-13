@@ -119,16 +119,32 @@
             <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
                 <h2 class="text-2xl font-bold text-gray-700 mb-6 border-b-2 border-purple-300 pb-3">Personal Details</h2>
                 <form id="profile-form" class="space-y-6">
+                    
+                     <div>
+                        <label for="new-password" class="block text-sm font-medium text-gray-700 mb-1">Upload Profile image</label>
+                        <input type="file" id="profile-image" name="profile-image"
+                               class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500 sm:text-sm" placeholder="Leave blank if not changing">
+                    </div>
+                
+                
                     <div>
                         <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
-                        <input type="text" id="name" name="name" value="John Doe" required
+                        <input type="text" id="name" name="name" value="John Doe" 
                                class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500 sm:text-sm">
                     </div>
+
                     <div>
                         <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
                         <input type="email" id="email" name="email" value="john.doe@example.com" required
                                class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500 sm:text-sm">
                     </div>
+
+                    <div>
+                        <label for="company" class="block text-sm font-medium text-gray-700 mb-1">Company</label>
+                        <input type="text" id="company" name="company" value="Phka Blush" disabled
+                            class="mt-1 block w-full px-4 py-2 bg-gray-100 border border-gray-300 rounded-md shadow-sm sm:text-sm text-gray-700">
+                    </div>
+
                     <div>
                         <label for="current-password" class="block text-sm font-medium text-gray-700 mb-1">Current Password (for changes)</label>
                         <input type="password" id="current-password" name="current-password"
