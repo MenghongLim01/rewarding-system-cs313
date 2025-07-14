@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 
 class AdminController extends Controller
 {
@@ -22,14 +23,64 @@ class AdminController extends Controller
     
     public function adminSettings()
     {
-        $data = [
-            'title' => 'Admin Settings',
-            'active' => 'admin-settings',
-        ];
-
-        return view('admin.admin-setting', compact('data'));
+        $admin = Auth::guard('admin')->user();
+    return view('admin.setting', compact('admin'));
     }
 
+// public function uploadProfileImage(Request $request)
+// {
+//     $request->validate([
+//         'admin_name' => 'required|string|max:255',
+//         'avatar' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+//     ]);
+
+//     $admin = Auth::guard('admin')->user();
+//     $admin->admin_name = $request->admin_name;
+//     // Delete old image (optional)
+//     $oldImage = public_path('images/' . $admin->admin_profile_image);
+//     if ($admin->admin_profile_image !== 'avatar1.jpg' && File::exists($oldImage)) {
+//         File::delete($oldImage);
+//     }
+
+//     // Save new image
+//     $filename = time() . '.' . $request->avatar->extension();
+//     $request->avatar->move(public_path('images'), $filename);
+
+//     // Update DB
+//     $admin->admin_profile_image = $filename;
+//     $admin->save();
+
+//     return redirect()->back()->with('success', 'Profile image updated.');
+// }
+    public function uploadProfileImage(Request $request)
+{
+    $request->validate([
+        'admin_name' => 'required|string|max:255',
+        'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // 👈 make avatar optional
+    ]);
+
+    $admin = Auth::guard('admin')->user();
+
+    // ✅ Update admin name
+    $admin->admin_name = $request->admin_name;
+
+    // ✅ Update image only if uploaded
+    if ($request->hasFile('avatar')) {
+        $oldImage = public_path('images/' . $admin->admin_profile_image);
+
+        if ($admin->admin_profile_image !== 'avatar1.jpg' && File::exists($oldImage)) {
+            File::delete($oldImage);
+        }
+
+        $filename = time() . '.' . $request->avatar->extension();
+        $request->avatar->move(public_path('images'), $filename);
+        $admin->admin_profile_image = $filename;
+    }
+
+    $admin->save(); // ✅ Save both name and (maybe) image
+
+    return redirect()->back()->with('success', 'Profile updated successfully.');
+}
     public function manageUser()
     {
         $data = [

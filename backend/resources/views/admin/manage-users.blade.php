@@ -16,8 +16,8 @@
     <div class="flex items-center justify-between">
         <button 
             class="adduser bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out"
-            onclick="window.location.href='/admin/manage-users/create'">
-            + Add User
+            onclick="window.location.href='/admin/manage-users/create-user'">
+            + Add New User
         </button>
     </div>
 
