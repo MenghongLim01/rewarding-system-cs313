@@ -67,7 +67,7 @@ body {
 
 .sidebar ul li a:hover,
 .sidebar ul li a.active {
-  background-color: #eaeaea;
+  color:white
 }
 
 /* Main Content Area */

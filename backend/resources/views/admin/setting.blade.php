@@ -37,7 +37,7 @@
 
             <!-- Submit -->
             <div class="d-grid mt-4">
-                <button type="submit" class="btn btn-primary fw-semibold">
+                <button type="submit" class="btn btn-primary fw-semibold" style="background-color:#6b46c1">
                     Update Profile
                 </button>
             </div>

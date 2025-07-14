@@ -74,7 +74,7 @@ Route::prefix('admin')->group(function () {
         Route::get('/api-documentation', [AdminController::class, 'apiDocumentation'])->name('admin.api');
         Route::get('/manage-staffs', [AdminController::class, 'manageStaffs'])->name('staffs');
         Route::post('/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
-        Route::get('/setting', [AdminController::class, 'adminSettings'])->name('admin.settings');
+        Route::get('/setting', [AdminController::class, 'adminSettings'])->name('admin.setting');
         Route::post('/profile/upload', [AdminController::class, 'uploadProfileImage'])->name('admin.profile.upload');
 
 });
