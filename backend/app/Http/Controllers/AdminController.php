@@ -3,18 +3,21 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
 
     public function adminDashboard()
     {
-        $data = [
-            'title' => 'Admin Dashboard',
-            'active' => 'admin-dashboard',
-        ];
+        $admin = Auth::guard('admin')->user(); // 🧠 This MUST return the logged-in admin
 
-        return view('admin.admin-dashboard', compact('data'));
+    if (!$admin) {
+        // Session isn't persisting the login
+        return redirect()->route('admin.login')->withErrors(['admin_email' => 'Session lost']);
+    }
+
+    return view('admin.admin-dashboard', compact('admin'));
     }
     
     public function adminSettings()

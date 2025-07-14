@@ -1,0 +1,6 @@
+@extends('admin.layouts.layout')
+
+@section('title', 'Admin Settings')
+
+@section('content')
+@endsection

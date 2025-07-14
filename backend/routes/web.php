@@ -57,11 +57,15 @@ Route::get('/process-customer-orders', [AdminController::class, 'processCustomer
 
 // without Authentication
 
+Route::get('/admin/login', [AdminAuthController::class, 'showLoginForm'])->name('admin.login');
+Route::post('/admin/login', [AdminAuthController::class, 'login'])->name('admin.login.submit');
 Route::prefix('admin')->group(function () {
-    Route::get('/login', [AdminAuthController::class, 'showLoginForm'])->name('admin.login');
-    Route::post('/login', [AdminAuthController::class, 'login'])->name('admin.login.submit');
-
-    
+    //  Route::get('/login', [AdminAuthController::class, 'showLoginForm'])->name('admin.login');
+    // Route::post('/login', [AdminAuthController::class, 'login'])->name('admin.login.submit');
+    // Route::middleware('auth:admin')->group(function () {
+    Route::middleware(['auth:admin'])->group(function () {
+        Route::get('/profile', [AdminController::class, 'showProfile'])->name('admin.profile');
+        Route::post('/profile/update', [AdminController::class, 'updateProfile'])->name('admin.profile.update');
         Route::get('/dashboard', [AdminController::class, 'adminDashboard'])->name('admin.dashboard');
         Route::get('/settings', [AdminController::class, 'adminSettings'])->name('admin.settings');
         Route::get('/manage-user', [AdminController::class, 'manageUser'])->name('admin.users');
@@ -70,5 +74,9 @@ Route::prefix('admin')->group(function () {
         Route::get('/api-documentation', [AdminController::class, 'apiDocumentation'])->name('admin.api');
         Route::get('/manage-staffs', [AdminController::class, 'manageStaffs'])->name('staffs');
         Route::post('/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
-    
 });
+      
+    // });
+});
+
+

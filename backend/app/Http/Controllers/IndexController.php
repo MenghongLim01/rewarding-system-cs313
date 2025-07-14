@@ -108,7 +108,7 @@ class IndexController extends Controller
             'active' => 'login',
         ];
 
-        return view('Auth.login', compact('data'));
+        return view('auth.login', compact('data'));
     }
 
     public function register()

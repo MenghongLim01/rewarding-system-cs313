@@ -1,16 +1,31 @@
 @extends('admin.layouts.layout')
 
 @section('title', 'Manage Users')
+<script src="https://cdn.tailwindcss.com"></script>
 
 @section('content')
 <link rel="stylesheet" href="{{ asset('css/manage-users.css') }}">
 
 <div class="users-container">
     <!-- Header -->
-    <div class="header">
-        <h1>Manage Users 👥</h1>
-        <a href="{{ route('admin.dashboard') }}" class="back-link">← Back to Dashboard</a>
+     <div class="flex items-center justify-between">
+        <h1 class="text-2xl font-semibold text-gray-800">Users Management 👥</h1>
     </div>
+
+  <div class="header mb-6 mt-4">
+    <div class="flex items-center justify-between">
+        <button 
+            class="adduser bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out"
+            onclick="window.location.href='/admin/manage-users/create'">
+            + Add User
+        </button>
+    </div>
+
+    <div class="flex justify-end mt-4">
+        <a href="{{ route('admin.dashboard') }}" class="text-blue-600 hover:underline text-sm">← Back to Dashboard</a>
+    </div>
+</div>
+
 
     <!-- Users Table -->
     <div class="table-wrapper">
@@ -20,6 +35,7 @@
                     <th>ID</th>
                     <th>Name</th>
                     <th>Email</th>
+                    <th>Company</th>
                     <th>Role</th>
                     <th>Points</th>
                     <th class="text-right">Actions</th>
@@ -30,6 +46,7 @@
                     <td>1</td>
                     <td>John Doe</td>
                     <td>john.doe@example.com</td>
+                    <td>Company</td>
                     <td>User</td>
                     <td>1500</td>
                     <td class="text-right">
@@ -41,6 +58,7 @@
                     <td>2</td>
                     <td>Jane Smith</td>
                     <td>jane.smith@example.com</td>
+                    <td>Company</td>
                     <td>User</td>
                     <td>800</td>
                     <td class="text-right">
@@ -52,6 +70,7 @@
                     <td>3</td>
                     <td>Admin User</td>
                     <td>admin@example.com</td>
+                    <td>Company</td>
                     <td class="text-purple-600 font-semibold">Admin</td>
                     <td>0</td>
                     <td class="text-right">
