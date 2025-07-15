@@ -8,16 +8,37 @@
     <div class="courses">
       <div class="course-card">
         <div class="course-icon">👤</div>
-        <p>Total Users: 1,250</p>
+        <p>Total Users: {{ number_format($totalUsers) }}</p>
+      </div>
+
+      <div class="course-card">
+        <div class="course-icon">🏢</div>
+        <p>Total Companies: {{ number_format($totalCompanies) }}</p>
       </div>
       <div class="course-card">
+        <div class="course-icon">🧑‍🍳</div>
+        <p>Total Staffs: 9999</p>
+      </div>
+    </div>
+    <div class="courses">
+      <div class="course-card">
+        <div class="course-icon">👤</div>
+        <p>Total Users: {{ number_format($totalUsers) }}</p>
+      </div>
+      <!-- <div class="course-card bg-white rounded-xl shadow-md p-6 text-center w-full max-w-sm mx-auto">
+    <div class="course-icon text-4xl mb-4 text-purple-600">👤</div>
+    <p class="text-lg font-semibold text-gray-700">Total Users: {{ number_format($totalUsers) }}</p>
+</div> -->
+
+      <div class="course-card">
         <div class="course-icon">🎁</div>
-        <p>Total Redemptions: 875</p>
+        <p>Total Rewards: 875</p>
       </div>
       <div class="course-card">
         <div class="course-icon">💎</div>
-        <p>Points Issued: 150,000</p>
+        <p>Points Issued: {{ number_format($totalPoints) }}</p>
       </div>
     </div>
+  
   </div>
 @endsection

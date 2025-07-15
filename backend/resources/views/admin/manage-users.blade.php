@@ -1,91 +1,37 @@
-@extends('admin.layouts.layout')
 
-@section('title', 'Manage Users')
+<!-- <link rel="stylesheet" href="{{ asset('css/manage-users.css') }}"> -->
+
+
+<div class="users-container">
+    <!-- Header -->
+ @extends('admin.layouts.layout')
+
+@section('title', 'Admin Users Management')
+<script src="https://cdn.tailwindcss.com"></script>
 
 @section('content')
 <link rel="stylesheet" href="{{ asset('css/manage-users.css') }}">
 
-<style>
-/* Button style reused from Staff */
-.btn-add-user {
-    background-color: #614cafff;
-    color: white;
-    padding: 10px 16px;
-    font-size: 14px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-bottom: 10px;
-}
-.btn-add-user:hover {
-    background-color: #45a049;
-}
-
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0,0,0,0.4);
-    justify-content: center;
-    align-items: center;
-}
-.modal-content {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    width: 400px;
-}
-.modal-input {
-    width: 100%;
-    padding: 8px;
-    margin-bottom: 12px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-.btn-cancel, .btn-confirm {
-    padding: 8px 14px;
-    border: none;
-    border-radius: 4px;
-}
-.btn-cancel {
-    background-color: #ccc;
-}
-.btn-confirm {
-    background-color: #4CAF50;
-    color: white;
-}
-.btn-edit,
-.btn-delete {
-    padding: 6px 14px;
-    font-size: 13px;
-    border-radius: 6px;
-    border: none;
-    cursor: pointer;
-}
-
-.btn-edit {
-    background-color: #6b46c1;
-    color: white;
-}
-</style>
-
 <div class="users-container">
     <!-- Header -->
-    <div class="header">
-        <h1>Manage Users 👥</h1>
-        <a href="{{ route('admin.dashboard') }}" class="back-link">← Back to Dashboard</a>
+     <div class="flex items-center justify-between">
+        <h1 class="text-2xl font-semibold text-gray-800">Users Management 👥</h1>
     </div>
 
-    <!-- Add User Button -->
-    <button class="btn-add-user" onclick="openModal('addUserModal')">Add User</button>
-@if(session('success'))
-    <div class="alert alert-success">{{ session('success') }}</div>
-@endif
+  <div class="header mb-6 mt-4">
+    <div class="flex items-center justify-between">
+        <button 
+            class="adduser bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out"
+            onclick="window.location.href='{{ route('admin.users.create') }}'">
+            + Add New User
+        </button>
+    </div>
+
+    <div class="flex justify-end mt-4">
+        <a href="{{ route('admin.dashboard') }}" class="text-blue-600 hover:underline text-sm">← Back to Dashboard</a>
+    </div>
+</div>
+
     <!-- Users Table -->
     <div class="table-wrapper">
         <table class="user-table">

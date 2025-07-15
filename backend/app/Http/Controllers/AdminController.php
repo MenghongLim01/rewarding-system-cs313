@@ -6,20 +6,17 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use App\Models\User;
+use App\Models\Company;
 
 class AdminController extends Controller
 {
 
     public function adminDashboard()
     {
-        $admin = Auth::guard('admin')->user(); // 🧠 This MUST return the logged-in admin
-
-    if (!$admin) {
-        // Session isn't persisting the login
-        return redirect()->route('admin.login')->withErrors(['admin_email' => 'Session lost']);
-    }
-
-    return view('admin.admin-dashboard', compact('admin'));
+         $totalUsers = User::count();
+         $totalCompanies = Company::count();
+        $totalPoints = User::sum('points');
+    return view('admin.admin-dashboard', compact('totalUsers', 'totalPoints', 'totalCompanies'));
     }
     
     public function adminSettings()
@@ -28,31 +25,6 @@ class AdminController extends Controller
     return view('admin.setting', compact('admin'));
     }
 
-// public function uploadProfileImage(Request $request)
-// {
-//     $request->validate([
-//         'admin_name' => 'required|string|max:255',
-//         'avatar' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-//     ]);
-
-//     $admin = Auth::guard('admin')->user();
-//     $admin->admin_name = $request->admin_name;
-//     // Delete old image (optional)
-//     $oldImage = public_path('images/' . $admin->admin_profile_image);
-//     if ($admin->admin_profile_image !== 'avatar1.jpg' && File::exists($oldImage)) {
-//         File::delete($oldImage);
-//     }
-
-//     // Save new image
-//     $filename = time() . '.' . $request->avatar->extension();
-//     $request->avatar->move(public_path('images'), $filename);
-
-//     // Update DB
-//     $admin->admin_profile_image = $filename;
-//     $admin->save();
-
-//     return redirect()->back()->with('success', 'Profile image updated.');
-// }
     public function uploadProfileImage(Request $request)
 {
     $request->validate([
@@ -110,12 +82,47 @@ class AdminController extends Controller
         return view('admin.edit-user', compact('user'));
     }
     public function deleteUser($user_id)
-{
-    $user = User::where('user_id', $user_id)->firstOrFail();
-    $user->delete();
+    {
+        $user = User::where('user_id', $user_id)->firstOrFail();
+        $user->delete();
 
-    return redirect()->route('admin.users')->with('success', 'User updated successfully!');
+     return redirect()->route('admin.users')->with('success', 'User updated successfully!');
+    }
+
+    public function createUser()
+{
+    $companies = Company::all();
+    return view('admin.create-user', compact('companies'));
 }
+
+public function storeUser(Request $request)
+    {
+        $request->validate([
+        'user_name' => 'required|string|max:255',
+        'user_email' => 'required|email|unique:users,user_email',
+        'password' => 'required|confirmed|min:6',
+        'company_id' => 'required|exists:companies,company_id',
+    ]);
+
+    try {
+        $user = new User();
+        $user->user_name = $request->user_name;
+        $user->user_email = $request->user_email;
+        $user->user_password = bcrypt($request->password);
+        $user->company_id = $request->company_id;
+        $user->points = 0;
+
+        $user->save();
+
+        return redirect()->route('admin.users')->with('success', 'User created successfully.');
+    } catch (\Exception $e) {
+        return back()->with('error', 'Failed to create user: ' . $e->getMessage());
+    }
+
+    // return redirect()->route('admin.users')->with('success', 'User created successfully.');
+    }
+
+
 
     public function managerReward()
     {
