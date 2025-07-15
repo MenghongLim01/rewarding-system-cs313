@@ -122,13 +122,15 @@ Route::prefix('staff')->group(function () {
     // Staff Login (no auth)
     Route::get('/login', [StaffController::class, 'showLoginForm'])->name('staff.login.form');
     Route::post('/login', [StaffController::class, 'login'])->name('staff.login.submit');
-    Route::post('/logout', [StaffController::class, 'logout'])->name('staff.logout');
-    Route::get('/process', [StaffController::class, 'processCustomerOrders'])->name('staff.process-customer-orders');
-    Route::get('/transaction', [StaffController::class, 'viewTransactionHistory'])->name('staff.transactions'); 
+    // Route::post('/logout', [StaffController::class, 'logout'])->name('staff.logout');
+    // Route::get('/process', [StaffController::class, 'processCustomerOrders'])->name('staff.process-customer-orders');
+    // Route::get('/transaction', [StaffController::class, 'viewTransactionHistory'])->name('staff.transactions'); 
 
     // Staff Authenticated Routes
     Route::middleware(['auth:staff'])->group(function () {
-        
+        Route::post('/logout', [StaffController::class, 'logout'])->name('staff.logout');
+        Route::get('/process', [StaffController::class, 'processCustomerOrders'])->name('staff.process-customer-orders');
+        Route::get('/transaction', [StaffController::class, 'viewTransactionHistory'])->name('staff.transactions'); 
     });
 });
 

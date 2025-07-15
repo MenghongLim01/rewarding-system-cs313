@@ -20,6 +20,9 @@ class CustomAdminRedirect
         if ($request->is('admin') || $request->is('admin/*')) {
             return redirect()->route('admin.login');
         }
+        if ($request->is('staff') || $request->is('staff/*')) {
+            return redirect()->route('staff.login.form');
+        }
 
         return redirect()->route('login');
     }
