@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use App\Models\User;
 
 class AdminController extends Controller
 {
@@ -81,15 +82,40 @@ class AdminController extends Controller
 
     return redirect()->back()->with('success', 'Profile updated successfully.');
 }
+
     public function manageUser()
     {
-        $data = [
-            'title' => 'Manage User',
-            'active' => 'manage-user',
-        ];
-
-        return view('admin.manage-users', compact('data'));
+        $users = User::with('company')->get(); // eager load company if there's a relation
+        return view('admin.manage-users', compact('users'));
     }
+    public function updateUser(Request $request, $user_id)
+{
+    $request->validate([
+        'user_name' => 'required|string|max:255',
+        'user_email' => 'required|email|max:255',
+    ]);
+
+    $user = User::where('user_id', $user_id)->firstOrFail(); // ✅ use user_id
+
+    $user->user_name = $request->user_name;
+    $user->user_email = $request->user_email;
+    $user->save();
+
+    return redirect()->route('admin.users')->with('success', 'User updated successfully!');
+
+}
+    public function editUser($user_id)
+    {
+        $user = \App\Models\User::with('company')->findOrFail($user_id);
+        return view('admin.edit-user', compact('user'));
+    }
+    public function deleteUser($user_id)
+{
+    $user = User::where('user_id', $user_id)->firstOrFail();
+    $user->delete();
+
+    return redirect()->route('admin.users')->with('success', 'User updated successfully!');
+}
 
     public function managerReward()
     {

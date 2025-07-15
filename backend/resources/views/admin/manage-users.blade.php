@@ -59,6 +59,19 @@
     background-color: #4CAF50;
     color: white;
 }
+.btn-edit,
+.btn-delete {
+    padding: 6px 14px;
+    font-size: 13px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-edit {
+    background-color: #6b46c1;
+    color: white;
+}
 </style>
 
 <div class="users-container">
@@ -70,7 +83,9 @@
 
     <!-- Add User Button -->
     <button class="btn-add-user" onclick="openModal('addUserModal')">Add User</button>
-
+@if(session('success'))
+    <div class="alert alert-success">{{ session('success') }}</div>
+@endif
     <!-- Users Table -->
     <div class="table-wrapper">
         <table class="user-table">
@@ -80,115 +95,40 @@
                     <th>Name</th>
                     <th>Email</th>
                     <th>Company</th>
-                    <th>Role</th>
                     <th>Points</th>
                     <th class="text-right">Actions</th>
                 </tr>
             </thead>
             <tbody id="users-list">
+            @foreach($users as $user)
                 <tr>
-                    <td>1</td>
-                    <td>John Doe</td>
-                    <td>john.doe@example.com</td>
-                    <td>Company A</td>
-                    <td>User</td>
-                    <td>1500</td>
-                    <td class="text-right">
-                        <button class="btn-edit">Edit</button>
-                        <button class="btn-delete">Delete</button>
+                    <td>{{ $user->user_id }}</td>
+                    <td>{{ $user->user_name }}</td>
+                    <td>{{ $user->user_email }}</td>
+                    <td>{{ $user->company->company_name ?? 'N/A' }}</td>
+                    <td>{{ $user->points }}</td>
+                    <td class="text-right d-flex">
+                        <a href="{{ route('admin.users.edit', $user->user_id) }}" class="btn btn-sm btn-primary me-2">Edit</a>
+
+                        <form id="delete-form-{{ $user->user_id }}" 
+                        action="{{ route('admin.users.delete', $user->user_id) }}" 
+                        method="POST" 
+                        lass="d-inline">
+                            @csrf
+                            @method('DELETE')
+                                <a href="#" 
+                                    onclick="if(confirm('Are you sure you want to delete this user?')) document.getElementById('delete-form-{{ $user->user_id }}').submit();"
+                                    class="btn btn-sm btn-danger">
+                                    Delete
+                                </a>
+                            </form>
+
                     </td>
-                </tr>
-            </tbody>
+                    </tr>
+            @endforeach
+        </tbody>
         </table>
     </div>
 </div>
 
-<!-- Message Modal -->
-<div id="messageModal" class="modal">
-    <div class="modal-content">
-        <span class="close-button" onclick="closeModal('messageModal')">&times;</span>
-        <h2>Info</h2>
-        <p>This is a test message.</p>
-        <button onclick="closeModal('messageModal')">Got It</button>
-    </div>
-</div>
-
-<!-- Add User Modal -->
-<div id="addUserModal" class="modal">
-    <div class="modal-content">
-        <span class="close-button" onclick="closeModal('addUserModal')">&times;</span>
-        <h2 class="text-xl font-bold mb-4">Add New User</h2>
-        <form onsubmit="event.preventDefault(); alert('Add user submitted'); closeModal('addUserModal');">
-            <label for="id">ID</label>
-            <input type="text" name="id" class="modal-input" required>
-
-            <label for="name">Name</label>
-            <input type="text" name="name" class="modal-input" required>
-
-            <label for="email">Email</label>
-            <input type="email" name="email" class="modal-input" required>
-
-            <label for="company">Company</label>
-            <input type="text" name="company" class="modal-input" required>
-
-            <label for="role">Role</label>
-            <input type="text" name="role" class="modal-input" required>
-
-            <label for="points">Points</label>
-            <input type="number" name="points" class="modal-input" required>
-
-            <div class="mt-4 flex justify-end">
-                <button type="button" class="btn-cancel" onclick="closeModal('addUserModal')">Cancel</button>
-                <button type="submit" class="btn-confirm ml-2">Add User</button>
-            </div>
-        </form>
-    </div>
-</div>
-
-<!-- Edit User Modal -->
-<div id="editUserModal" class="modal">
-    <div class="modal-content">
-        <span class="close-button" onclick="closeModal('editUserModal')">&times;</span>
-        <h2 class="text-xl font-bold mb-4">Edit User</h2>
-        <form onsubmit="event.preventDefault(); alert('Edit user submitted'); closeModal('editUserModal');">
-            <label for="id">ID</label>
-            <input type="text" name="id" class="modal-input" value="1" required>
-
-            <label for="name">Name</label>
-            <input type="text" name="name" class="modal-input" value="John Doe" required>
-
-            <label for="email">Email</label>
-            <input type="email" name="email" class="modal-input" value="john.doe@example.com" required>
-
-            <label for="company">Company</label>
-            <input type="text" name="company" class="modal-input" value="Company A" required>
-
-            <label for="role">Role</label>
-            <input type="text" name="role" class="modal-input" value="User" required>
-
-            <label for="points">Points</label>
-            <input type="number" name="points" class="modal-input" value="1500" required>
-
-            <div class="mt-4 flex justify-end">
-                <button type="button" class="btn-cancel" onclick="closeModal('editUserModal')">Cancel</button>
-                <button type="submit" class="btn-confirm ml-2">Update</button>
-            </div>
-        </form>
-    </div>
-</div>
-
-<script>
-function closeModal(id) {
-    document.getElementById(id).style.display = 'none';
-}
-function openModal(id) {
-    document.getElementById(id).style.display = 'flex';
-}
-document.querySelectorAll('.btn-edit').forEach(btn => {
-    btn.addEventListener('click', () => openModal('editUserModal'));
-});
-document.querySelectorAll('.btn-delete').forEach(btn => {
-    btn.addEventListener('click', () => openModal('messageModal'));
-});
-</script>
 @endsection
