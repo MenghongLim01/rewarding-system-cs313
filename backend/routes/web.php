@@ -113,9 +113,6 @@ Route::middleware(['auth:admin'])->group(function () {
 });
 
 
-
-
-
 Route::prefix('staff')->group(function () {
     // Staff Login (no auth)
     Route::get('/login', function () {return view('staff.auth.login');})->name('staff.login');

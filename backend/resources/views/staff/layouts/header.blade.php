@@ -1,6 +1,6 @@
 <nav class="flex justify-between items-center pb-4 border-b border-gray-200">
     <a href="{{ route('staff.process-customer-orders') }}" class="text-2xl font-extrabold text-indigo-700">
-        Staff Panel
+        PointTrix Staff
     </a>
 
     <ul class="flex space-x-6">

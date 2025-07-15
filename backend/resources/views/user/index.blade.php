@@ -88,7 +88,7 @@
     <div class="container mx-auto p-6 bg-white rounded-xl shadow-lg max-w-4xl w-full">
         <!-- Navigation Menu -->
         <nav class="flex justify-between items-center mb-10 pb-4 border-b border-gray-200">
-            <div class="text-2xl font-extrabold text-purple-700">Reward System</div>
+            <div class="text-2xl font-extrabold text-purple-700">Point Trick</div>
             <ul class="flex space-x-6">
                 <li><a href="/" class="text-gray-700 hover:text-purple-600 font-medium transition duration-300">Home</a></li>
                 <li><a href="/login" class="text-gray-700 hover:text-purple-600 font-medium transition duration-300">Login</a></li>

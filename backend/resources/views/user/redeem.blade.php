@@ -8,7 +8,7 @@
 
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
         {{-- Static reward cards --}}
-        @for($i = 0; $i < 10; $i++)
+        @for($i = 0; $i < 6; $i++)
         <div class="bg-white p-6 rounded-xl shadow-md flex flex-col items-center text-center border hover:shadow-xl transition duration-300">
             <!-- Static image placeholder (yellow box) -->
             <img src="https://via.placeholder.com/96x96.png?text=Img" alt="Reward Image"
