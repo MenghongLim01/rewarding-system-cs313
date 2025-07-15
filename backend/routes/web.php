@@ -6,6 +6,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\CompaniesController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\StaffController;
 
 
 /*
@@ -25,6 +26,8 @@ use App\Http\Controllers\UserController;
         // Add more routes here
         Route::post('/logout', [UserController::class, 'logout'])->name('user.logout');
         Route::get('/history', [UserController::class, 'history'])->name('user.history');
+        Route::get('/redeem', [UserController::class, 'redeem'])->name('user.redeem');
+        Route::get('/profile', [UserController::class, 'profile'])->name('user.profile');
     });
 
 
@@ -104,9 +107,26 @@ Route::middleware(['auth:admin'])->group(function () {
 
 
 
-});
+    });
       
-    // });
+    
 });
+
+
+
+
+
+Route::prefix('staff')->group(function () {
+    // Staff Login (no auth)
+    Route::get('/login', function () {return view('staff.auth.login');})->name('staff.login');
+    Route::get('/process', [StaffController::class, 'processCustomerOrders'])->name('staff.process-customer-orders');
+    Route::get('/transaction', [StaffController::class, 'viewTransactionHistory'])->name('staff.transactions'); 
+
+    // Staff Authenticated Routes
+    Route::middleware(['auth:staff'])->group(function () {
+        
+    });
+});
+
 
 

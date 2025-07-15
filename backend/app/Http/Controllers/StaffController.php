@@ -6,5 +6,15 @@ use Illuminate\Http\Request;
 
 class StaffController extends Controller
 {
-    //
+    
+    public function processCustomerOrders()
+    {
+        return view('staff.process-customer-orders');
+    }
+
+    public function viewTransactionHistory()
+    {
+        return view('staff.transaction');
+    }
+
 }

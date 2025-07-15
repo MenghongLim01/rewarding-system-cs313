@@ -4,9 +4,9 @@
     <ul class="flex space-x-6">
         <li><a href="{{ route('dashboard') }}" class="text-purple-600 font-medium transition duration-300">Dashboard</a></li>
         <!-- <li><a href="#" class="text-gray-700 hover:text-purple-600 font-medium transition duration-300">View Points</a></li> -->
-        <li><a href="#" class="text-gray-700 hover:text-purple-600 font-medium transition duration-300">Redeem Rewards</a></li>
+        <li><a href="{{ route('user.redeem') }}" class="text-gray-700 hover:text-purple-600 font-medium transition duration-300">Redeem Rewards</a></li>
         <li><a href="{{ route('user.history') }}" class="text-gray-700 hover:text-purple-600 font-medium transition duration-300">History</a></li>
-        <li><a href="#" class="text-gray-700 hover:text-purple-600 font-medium transition duration-300">Profile</a></li>
+        <li><a href="{{ route('user.profile') }}" class="text-gray-700 hover:text-purple-600 font-medium transition duration-300">Profile</a></li>
         <li><form method="POST" action="{{ route('user.logout') }}">
             @csrf
               <button type="submit" 

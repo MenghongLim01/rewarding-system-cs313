@@ -93,6 +93,14 @@ class UserController extends Controller
         return redirect()->route('login');
     }
 
+        public function redeem()
+    {
+        return view('user.redeem');
+    }
 
+    public function profile()
+    {
+        return view('user.profile');
+    }
 
 }
