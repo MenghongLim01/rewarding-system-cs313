@@ -28,7 +28,11 @@
         <!-- <li><a href="{{ route('admin.settings') }}">Settings</a></li> -->
         
         <li><a href="{{ route('staffs') }}">Staffs Management</a></li>
-        <li><a href="{{ route('staffs') }}">Transaction History</a></li>
+        <li><a href="{{ route('admin.transaction.history') }}">Transaction History</a></li>
+
+
+
+
 
         <li class="hi hover:bg-light">
           <form method="POST" action="{{ route('admin.logout') }}">

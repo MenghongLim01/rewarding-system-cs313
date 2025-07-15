@@ -138,5 +138,15 @@ class AdminController extends Controller
 
         return view('admin.process-customer-orders', compact('data'));
     }
+    public function transactionHistory()
+    {
+        $data = [
+            'title' => 'Transaction History',
+            'active' => 'transaction-history',
+        ];
+
+        // Note the underscore (_) here
+        return view('admin.transaction_history', compact('data'));
+    }
 
 }

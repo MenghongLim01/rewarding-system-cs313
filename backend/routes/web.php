@@ -23,6 +23,8 @@ use App\Http\Controllers\UserController;
         Route::get('/dashboard', 'dashboard')->name('dashboard');
         Route::get('/profile', 'profile')->name('profile');
         // Add more routes here
+        
+        Route::get('/history', [UserController::class, 'history'])->name('user.history');
     });
 
 
@@ -44,8 +46,14 @@ Route::prefix('admin')->group(function () {
         Route::get('/api-documentation', [AdminController::class, 'apiDocumentation'])->name('admin.api');
         Route::get('/manage-staffs', [AdminController::class, 'manageStaffs'])->name('staffs');
         Route::post('/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
+
+        Route::get('/transaction-history', [AdminController::class, 'transactionHistory'])->name('admin.transaction.history');
+
     });
 });
+
+
+
 
 /*
 |--------------------------------------------------------------------------

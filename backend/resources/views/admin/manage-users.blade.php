@@ -1,31 +1,75 @@
 @extends('admin.layouts.layout')
 
 @section('title', 'Manage Users')
-<script src="https://cdn.tailwindcss.com"></script>
 
 @section('content')
 <link rel="stylesheet" href="{{ asset('css/manage-users.css') }}">
 
+<style>
+/* Button style reused from Staff */
+.btn-add-user {
+    background-color: #614cafff;
+    color: white;
+    padding: 10px 16px;
+    font-size: 14px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+.btn-add-user:hover {
+    background-color: #45a049;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+    justify-content: center;
+    align-items: center;
+}
+.modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    width: 400px;
+}
+.modal-input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.btn-cancel, .btn-confirm {
+    padding: 8px 14px;
+    border: none;
+    border-radius: 4px;
+}
+.btn-cancel {
+    background-color: #ccc;
+}
+.btn-confirm {
+    background-color: #4CAF50;
+    color: white;
+}
+</style>
+
 <div class="users-container">
     <!-- Header -->
-     <div class="flex items-center justify-between">
-        <h1 class="text-2xl font-semibold text-gray-800">Users Management 👥</h1>
+    <div class="header">
+        <h1>Manage Users 👥</h1>
+        <a href="{{ route('admin.dashboard') }}" class="back-link">← Back to Dashboard</a>
     </div>
 
-  <div class="header mb-6 mt-4">
-    <div class="flex items-center justify-between">
-        <button 
-            class="adduser bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out"
-            onclick="window.location.href='/admin/manage-users/create-user'">
-            + Add New User
-        </button>
-    </div>
-    
-    <div class="flex justify-end mt-4">
-        <a href="{{ route('admin.dashboard') }}" class="text-blue-600 hover:underline text-sm">← Back to Dashboard</a>
-    </div>
-</div>
-
+    <!-- Add User Button -->
+    <button class="btn-add-user" onclick="openModal('addUserModal')">Add User</button>
 
     <!-- Users Table -->
     <div class="table-wrapper">
@@ -46,35 +90,11 @@
                     <td>1</td>
                     <td>John Doe</td>
                     <td>john.doe@example.com</td>
-                    <td>Company</td>
+                    <td>Company A</td>
                     <td>User</td>
                     <td>1500</td>
                     <td class="text-right">
-                        <button class="btn-adjust">Adjust Points</button>
-                        <button class="btn-delete">Delete</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>Jane Smith</td>
-                    <td>jane.smith@example.com</td>
-                    <td>Company</td>
-                    <td>User</td>
-                    <td>800</td>
-                    <td class="text-right">
-                        <button class="btn-adjust">Adjust Points</button>
-                        <button class="btn-delete">Delete</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>Admin User</td>
-                    <td>admin@example.com</td>
-                    <td>Company</td>
-                    <td class="text-purple-600 font-semibold">Admin</td>
-                    <td>0</td>
-                    <td class="text-right">
-                        <button class="btn-adjust">Adjust Points</button>
+                        <button class="btn-edit">Edit</button>
                         <button class="btn-delete">Delete</button>
                     </td>
                 </tr>
@@ -83,50 +103,92 @@
     </div>
 </div>
 
-<!-- Modals -->
+<!-- Message Modal -->
 <div id="messageModal" class="modal">
     <div class="modal-content">
         <span class="close-button" onclick="closeModal('messageModal')">&times;</span>
-        <h2 id="message-modal-title">Info</h2>
-        <p id="message-modal-message">This is a test message.</p>
+        <h2>Info</h2>
+        <p>This is a test message.</p>
         <button onclick="closeModal('messageModal')">Got It</button>
     </div>
 </div>
 
-<div id="adjustPointsModal" class="modal">
+<!-- Add User Modal -->
+<div id="addUserModal" class="modal">
     <div class="modal-content">
-        <span class="close-button" onclick="closeModal('adjustPointsModal')">&times;</span>
-        <h2 class="text-xl font-bold mb-4">Adjust Points</h2>
-        <form id="adjust-points-form">
-            <label>Name</label>
-            <input type="text" readonly value="User Name" class="modal-input" />
-            <label>Current Points</label>
-            <input type="text" readonly value="1500" class="modal-input" />
-            <label>Adjustment</label>
-            <input type="number" required class="modal-input" />
+        <span class="close-button" onclick="closeModal('addUserModal')">&times;</span>
+        <h2 class="text-xl font-bold mb-4">Add New User</h2>
+        <form onsubmit="event.preventDefault(); alert('Add user submitted'); closeModal('addUserModal');">
+            <label for="id">ID</label>
+            <input type="text" name="id" class="modal-input" required>
+
+            <label for="name">Name</label>
+            <input type="text" name="name" class="modal-input" required>
+
+            <label for="email">Email</label>
+            <input type="email" name="email" class="modal-input" required>
+
+            <label for="company">Company</label>
+            <input type="text" name="company" class="modal-input" required>
+
+            <label for="role">Role</label>
+            <input type="text" name="role" class="modal-input" required>
+
+            <label for="points">Points</label>
+            <input type="number" name="points" class="modal-input" required>
+
             <div class="mt-4 flex justify-end">
-                <button type="button" onclick="closeModal('adjustPointsModal')" class="btn-cancel">Cancel</button>
-                <button type="submit" class="btn-confirm ml-2">Apply</button>
+                <button type="button" class="btn-cancel" onclick="closeModal('addUserModal')">Cancel</button>
+                <button type="submit" class="btn-confirm ml-2">Add User</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Edit User Modal -->
+<div id="editUserModal" class="modal">
+    <div class="modal-content">
+        <span class="close-button" onclick="closeModal('editUserModal')">&times;</span>
+        <h2 class="text-xl font-bold mb-4">Edit User</h2>
+        <form onsubmit="event.preventDefault(); alert('Edit user submitted'); closeModal('editUserModal');">
+            <label for="id">ID</label>
+            <input type="text" name="id" class="modal-input" value="1" required>
+
+            <label for="name">Name</label>
+            <input type="text" name="name" class="modal-input" value="John Doe" required>
+
+            <label for="email">Email</label>
+            <input type="email" name="email" class="modal-input" value="john.doe@example.com" required>
+
+            <label for="company">Company</label>
+            <input type="text" name="company" class="modal-input" value="Company A" required>
+
+            <label for="role">Role</label>
+            <input type="text" name="role" class="modal-input" value="User" required>
+
+            <label for="points">Points</label>
+            <input type="number" name="points" class="modal-input" value="1500" required>
+
+            <div class="mt-4 flex justify-end">
+                <button type="button" class="btn-cancel" onclick="closeModal('editUserModal')">Cancel</button>
+                <button type="submit" class="btn-confirm ml-2">Update</button>
             </div>
         </form>
     </div>
 </div>
 
 <script>
-    function closeModal(id) {
-        document.getElementById(id).style.display = 'none';
-    }
-
-    function openModal(id) {
-        document.getElementById(id).style.display = 'flex';
-    }
-
-    // Button event listeners (mock)
-    document.querySelectorAll('.btn-adjust').forEach(btn => {
-        btn.addEventListener('click', () => openModal('adjustPointsModal'));
-    });
-    document.querySelectorAll('.btn-delete').forEach(btn => {
-        btn.addEventListener('click', () => openModal('messageModal'));
-    });
+function closeModal(id) {
+    document.getElementById(id).style.display = 'none';
+}
+function openModal(id) {
+    document.getElementById(id).style.display = 'flex';
+}
+document.querySelectorAll('.btn-edit').forEach(btn => {
+    btn.addEventListener('click', () => openModal('editUserModal'));
+});
+document.querySelectorAll('.btn-delete').forEach(btn => {
+    btn.addEventListener('click', () => openModal('messageModal'));
+});
 </script>
 @endsection

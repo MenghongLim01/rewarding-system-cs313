@@ -5,12 +5,71 @@
 @section('content')
 <link rel="stylesheet" href="{{ asset('css/manage-users.css') }}">
 
+<style>
+.btn-add-staff {
+    background-color: #614cafff;
+    color: white;
+    padding: 10px 16px;
+    font-size: 14px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+.btn-add-staff:hover {
+    background-color: #45a049;
+}
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+    justify-content: center;
+    align-items: center;
+}
+.modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    width: 400px;
+}
+.modal-input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.btn-cancel, .btn-confirm {
+    padding: 8px 14px;
+    border: none;
+    border-radius: 4px;
+}
+.btn-cancel {
+    background-color: #ccc;
+}
+.btn-confirm {
+    background-color: #4CAF50;
+    color: white;
+}
+</style>
+
+<!-- Container for the entire page -->
+
+
 <div class="users-container">
     <!-- Header -->
     <div class="header">
         <h1>Manage Staff 👥</h1>
-        <a href="{{ route('admin.dashboard') }}" class="back-link">← Back to Dashboard</a>
+        <a href="#" class="back-link">← Back to Dashboard</a> <!-- Removed route -->
     </div>
+
+    <button class="btn-add-staff" onclick="openModal('addStaffModal')">Add Staff</button>
 
     <!-- Staff Table -->
     <div class="table-wrapper">
@@ -33,29 +92,7 @@
                     <td>Staff</td>
                     <td>Company A</td>
                     <td class="text-right">
-                        <button class="btn-adjust">Adjust Points</button>
-                        <button class="btn-delete">Delete</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>Jane Smith</td>
-                    <td>jane.smith@example.com</td>
-                    <td>Staff</td>
-                    <td>Company B</td>
-                    <td class="text-right">
-                        <button class="btn-adjust">Adjust Points</button>
-                        <button class="btn-delete">Delete</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>Admin User</td>
-                    <td>admin@example.com</td>
-                    <td class="text-purple-600 font-semibold">Admin</td>
-                    <td>Company C</td>
-                    <td class="text-right">
-                        <button class="btn-adjust">Adjust Points</button>
+                        <button class="btn-edit">Edit</button>
                         <button class="btn-delete">Delete</button>
                     </td>
                 </tr>
@@ -64,7 +101,7 @@
     </div>
 </div>
 
-<!-- Modals -->
+<!-- Message Modal -->
 <div id="messageModal" class="modal">
     <div class="modal-content">
         <span class="close-button" onclick="closeModal('messageModal')">&times;</span>
@@ -74,6 +111,38 @@
     </div>
 </div>
 
+<!-- Add Staff Modal -->
+<div id="addStaffModal" class="modal">
+    <div class="modal-content">
+        <span class="close-button" onclick="closeModal('addStaffModal')">&times;</span>
+        <h2 class="text-xl font-bold mb-4">Add New Staff</h2>
+
+        <!-- Simulate form without route -->
+        <form onsubmit="event.preventDefault(); alert('Submit pressed'); closeModal('addStaffModal');">
+            <label for="id">ID</label>
+            <input type="text" name="id" class="modal-input" required>
+
+            <label for="name">Name</label>
+            <input type="text" name="name" class="modal-input" required>
+
+            <label for="email">Email</label>
+            <input type="email" name="email" class="modal-input" required>
+
+            <label for="role">Role</label>
+            <input type="text" name="role" class="modal-input" required>
+
+            <label for="company">Company</label>
+            <input type="text" name="company" class="modal-input" required>
+
+            <div class="mt-4 flex justify-end">
+                <button type="button" class="btn-cancel" onclick="closeModal('addStaffModal')">Cancel</button>
+                <button type="submit" class="btn-confirm ml-2">Add Staff</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Adjust Points Modal -->
 <div id="adjustPointsModal" class="modal">
     <div class="modal-content">
         <span class="close-button" onclick="closeModal('adjustPointsModal')">&times;</span>
@@ -95,9 +164,41 @@
                 <button type="button" class="btn-confirm ml-2">Apply</button>
             </div>
         </div>
-
     </div>
 </div>
+
+
+<!-- Edit Staff Modal -->
+<div id="editStaffModal" class="modal">
+    <div class="modal-content">
+        <span class="close-button" onclick="closeModal('editStaffModal')">&times;</span>
+        <h2 class="text-xl font-bold mb-4">Edit Staff</h2>
+
+        <!-- Simulate form -->
+        <form onsubmit="event.preventDefault(); alert('Edit Submit pressed'); closeModal('editStaffModal');">
+            <label for="id">ID</label>
+            <input type="text" name="id" class="modal-input" value="1" required>
+
+            <label for="name">Name</label>
+            <input type="text" name="name" class="modal-input" value="John Doe" required>
+
+            <label for="email">Email</label>
+            <input type="email" name="email" class="modal-input" value="john.doe@example.com" required>
+
+            <label for="role">Role</label>
+            <input type="text" name="role" class="modal-input" value="Staff" required>  
+
+            <label for="company">Company</label>
+            <input type="text" name="company" class="modal-input" value="Company A" disabled>
+
+            <div class="mt-4 flex justify-end">
+                <button type="button" class="btn-cancel" onclick="closeModal('editStaffModal')">Cancel</button>
+                <button type="submit" class="btn-confirm ml-2">Update</button>
+            </div>
+        </form>
+    </div>
+</div>
+
 
 <script>
     function closeModal(id) {
@@ -108,12 +209,13 @@
         document.getElementById(id).style.display = 'flex';
     }
 
-    // Mock buttons for static interaction
-    document.querySelectorAll('.btn-adjust').forEach(btn => {
-        btn.addEventListener('click', () => openModal('adjustPointsModal'));
+    document.querySelectorAll('.btn-edit').forEach(btn => {
+    btn.addEventListener('click', () => openModal('editStaffModal'));
     });
+
     document.querySelectorAll('.btn-delete').forEach(btn => {
         btn.addEventListener('click', () => openModal('messageModal'));
     });
+
 </script>
 @endsection

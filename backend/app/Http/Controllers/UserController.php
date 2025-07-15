@@ -65,6 +65,10 @@ class UserController extends Controller
             ]);
         }
     }
+
+
+
+    // view
     public function index()
     {
         return view('user.index'); // Create this Blade view
@@ -73,4 +77,13 @@ class UserController extends Controller
     {
         return view('user.dashboard'); // Create this Blade view
     }
+
+    public function history()
+    {
+        return view('user.history');
+    }
+
+
+
+
 }
