@@ -7,16 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class Company extends Model
 {
     protected $table = 'companies';
-
+    protected $primaryKey = 'company_id';
     protected $fillable = [
-        'name',
-        'email',
-        'phone',
-        'address',
-        'website',
-        'logo',
-        'created_at',
-        'updated_at'
+        'company_name',
+        'company_type',
+        'company_desc',
     ];
 
     public function users()

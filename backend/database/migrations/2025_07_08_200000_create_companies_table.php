@@ -7,11 +7,11 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('companies', function (Blueprint $table) {
-            $table->id('company_id');
+            $table->bigIncrements('company_id');
             $table->string('company_name');
             $table->string('company_type');
             $table->text('company_desc')->nullable();
-            $table->timestamp('created_at')->useCurrent();
+            $table->timestamps();
         });
     }
     public function down(): void

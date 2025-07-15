@@ -1,6 +1,6 @@
 @extends('admin.layouts.layout')
 
-@section('title', 'Manage Companies')
+@section('title', 'Admin Companies Management')
 <script src="https://cdn.tailwindcss.com"></script>
 
 @section('content')
@@ -9,14 +9,14 @@
 <div class="users-container">
     <!-- Header -->
      <div class="flex items-center justify-between">
-        <h1 class="text-2xl font-semibold text-gray-800">Users Management 👥</h1>
+        <h1 class="text-2xl font-semibold text-gray-800">Companies Management 👥</h1>
     </div>
 
   <div class="header mb-6 mt-4">
     <div class="flex items-center justify-between">
         <button 
             class="adduser bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out"
-            onclick="window.location.href='/admin/manage-users/create-user'">
+            onclick="window.location.href='/admin/companies/create'">
             + Add New Company
         </button>
     </div>
@@ -33,51 +33,37 @@
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Company</th>
-                    <th>Role</th>
-                    <th>Points</th>
+                    <th>Company Name</th>
+                    <th>Type</th>
+                    <th>Description</th>
                     <th class="text-right">Actions</th>
                 </tr>
             </thead>
             <tbody id="users-list">
+                @foreach($companies as $company)
                 <tr>
-                    <td>1</td>
-                    <td>John Doe</td>
-                    <td>john.doe@example.com</td>
-                    <td>Company</td>
-                    <td>User</td>
-                    <td>1500</td>
-                    <td class="text-right">
-                        <button class="btn-adjust">Adjust Points</button>
-                        <button class="btn-delete">Delete</button>
+                    <td>{{ $company->company_id }}</td>
+                    <td>{{ $company->company_name }}</td>
+                    <td>{{ $company->company_type }}</td>
+                    <td>{{ $company->company_desc }}</td>
+                    <td class="text-right d-flex">
+                        <a href="{{ route('admin.companies.edit', $company->company_id) }}" class="btn btn-sm btn-primary me-2">Edit</a>
+                        <form id="delete-form-{{ $company->company_id }}" 
+                        action="{{ route('admin.companies.destroy', $company->company_id) }}" 
+                        method="POST" 
+                        lass="d-inline">
+                            @csrf
+                            @method('DELETE')
+                                <a href="#" 
+                                    onclick="if(confirm('Are you sure you want to delete this company?')) document.getElementById('delete-form-{{ $company->company_id }}').submit();"
+                                    class="btn btn-sm btn-danger">
+                                    Delete
+                                </a>
+                            </form>
+
                     </td>
                 </tr>
-                <tr>
-                    <td>2</td>
-                    <td>Jane Smith</td>
-                    <td>jane.smith@example.com</td>
-                    <td>Company</td>
-                    <td>User</td>
-                    <td>800</td>
-                    <td class="text-right">
-                        <button class="btn-adjust">Adjust Points</button>
-                        <button class="btn-delete">Delete</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>Admin User</td>
-                    <td>admin@example.com</td>
-                    <td>Company</td>
-                    <td class="text-purple-600 font-semibold">Admin</td>
-                    <td>0</td>
-                    <td class="text-right">
-                        <button class="btn-adjust">Adjust Points</button>
-                        <button class="btn-delete">Delete</button>
-                    </td>
-                </tr>
+                @endforeach
             </tbody>
         </table>
     </div>

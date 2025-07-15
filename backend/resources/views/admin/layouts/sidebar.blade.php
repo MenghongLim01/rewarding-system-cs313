@@ -1,5 +1,5 @@
 <!-- /resources/views/admin/layouts/sidebar.blade.php -->
-<!-- <link rel="stylesheet" href="{{ asset('css/manage-users.css') }}"> -->
+<link rel="stylesheet" href="{{ asset('css/manage-users.css') }}">
 <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 <aside class="sidebar">
   <div class="menu">
@@ -21,7 +21,7 @@
         
       </li>
         <li><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-        <li><a href="{{ route('admin.rewards') }}">Company Management</a></li>
+        <li><a href="{{ route('admin.companies.index') }}">Company Management</a></li>
         <li><a href="{{ route('admin.rewards') }}">Rewards Management</a></li>
         <li><a href="{{ route('admin.users') }}">Users Management</a></li>
         <!-- <li><a href="{{ route('admin.logs') }}">View Logs</a></li> -->

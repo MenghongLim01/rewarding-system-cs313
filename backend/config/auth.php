@@ -35,7 +35,17 @@ return [
             'driver' => 'session',
             'provider' => 'admins',
         ],
+        'user' => [
+            'driver' => 'session',
+            'provider' => 'users',
+        ],
+         'web' => [
+        'driver' => 'session',
+        'provider' => 'users',
     ],
+    ],
+
+
 
     /*
     |--------------------------------------------------------------------------
@@ -52,7 +62,13 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\Admin::class,
         ],
+         'users' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\User::class,
+        ],
     ],
+    
+
 
     /*
     |--------------------------------------------------------------------------

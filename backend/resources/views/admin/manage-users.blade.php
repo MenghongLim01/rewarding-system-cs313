@@ -20,7 +20,7 @@
             + Add New User
         </button>
     </div>
-
+    
     <div class="flex justify-end mt-4">
         <a href="{{ route('admin.dashboard') }}" class="text-blue-600 hover:underline text-sm">← Back to Dashboard</a>
     </div>

@@ -87,17 +87,27 @@
     <!-- Main container for the Register Page content -->
     <div class="container mx-auto p-6 bg-white rounded-xl shadow-lg max-w-md w-full">
         <h1 class="text-4xl font-extrabold text-center text-gray-800 mb-8">Create Your Account</h1>
+@if ($errors->any())
+    <div class="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+        <ul class="list-disc pl-5 text-sm">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach 
+        </ul>
+    </div>
+@endif
 
         <!-- Registration Form -->
-        <form id="register-form" class="space-y-6">
+        <form id="register-form" class="space-y-6" method="POST" action="{{ route('register.submit') }}">
+            @csrf
             <div>
                 <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
-                <input type="text" id="name" name="name" required
+                <input type="text" id="name" name="user_name" required
                        class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500 sm:text-sm">
             </div>
             <div>
                 <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
-                <input type="email" id="email" name="email" required
+                <input type="email" id="email" name="user_email" required
                        class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500 sm:text-sm">
             </div>
             <div>
@@ -107,11 +117,11 @@
             </div>
             <div>
                 <label for="confirm-password" class="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
-                <input type="password" id="confirm-password" name="confirm-password" required
+                <input type="password" id="password_confirmation" name="password_confirmation" required
                        class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500 sm:text-sm">
             </div>
             
-            <div>
+            <!-- <div>
                 <label for="company" class="block text-sm font-medium text-gray-700 mb-1">Select Company</label>
                 <select id="company" name="company" required
                         class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500 sm:text-sm">
@@ -119,6 +129,16 @@
                     <option value="Phka Blush">Phka Blush</option>
                     <option value="Siem Reap Tech">Siem Reap Tech</option>
                     <option value="Angkor Craft">Angkor Craft</option>
+                </select>
+            </div> -->
+            <div>
+                <label for="company_id" class="block text-sm font-medium text-gray-700 mb-1">Select Company</label>
+                <select id="company_id" name="company_id" required
+                class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500 sm:text-sm">
+                    <option value="" disabled selected>-- Choose a company --</option>
+                    @foreach ($companies as $company)
+                        <option value="{{ $company->company_id }}">{{ $company->company_name }}</option>
+                    @endforeach
                 </select>
             </div>
 
@@ -155,69 +175,6 @@
         </div>
     </div>
 
-    <script>
-        // General Modal functions
-        const messageModal = document.getElementById('messageModal');
-        const messageModalTitle = document.getElementById('message-modal-title');
-        const messageModalMessage = document.getElementById('message-modal-message');
-
-        function openModal(modalId, title = '', message = '') {
-            const modal = document.getElementById(modalId);
-            if (modalId === 'messageModal') {
-                messageModalTitle.textContent = title;
-                messageModalMessage.textContent = message;
-            }
-            modal.style.display = 'flex';
-        }
-
-        function closeModal(modalId) {
-            document.getElementById(modalId).style.display = 'none';
-        }
-
-        window.addEventListener('click', (event) => {
-            if (event.target == messageModal) {
-                closeModal('messageModal');
-            }
-        });
-
-        // Registration Form Logic
-        const registerForm = document.getElementById('register-form');
-
-        registerForm.addEventListener('submit', (event) => {
-            event.preventDefault(); // Prevent default form submission
-
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const confirmPassword = document.getElementById('confirm-password').value;
-            const termsAccepted = document.getElementById('terms-checkbox').checked;
-
-            if (password !== confirmPassword) {
-                openModal('messageModal', 'Registration Error', 'Passwords do not match.');
-                return;
-            }
-
-            if (!termsAccepted) {
-                openModal('messageModal', 'Registration Error', 'You must agree to the Terms and Conditions and Privacy Policy.');
-                return;
-            }
-
-            // Basic email validation (more robust validation should be done on the backend)
-            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-                openModal('messageModal', 'Registration Error', 'Please enter a valid email address.');
-                return;
-            }
-
-            // In a real application, you would send this data to your backend for user registration.
-            console.log('Attempting to register user:', { name, email, password });
-
-            // Simulate successful registration
-            openModal('messageModal', 'Registration Successful!', 'Your account has been created. Redirecting to login...');
-            setTimeout(() => {
-                window.location.href = '/login'; // Redirect to login page
-            }, 2000);
-        });
-    </script>
 </body>
 </html>
 

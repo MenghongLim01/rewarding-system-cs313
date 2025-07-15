@@ -87,12 +87,23 @@
     <!-- Main container for the Login Page content -->
     <div class="container mx-auto p-6 bg-white rounded-xl shadow-lg max-w-md w-full">
         <h1 class="text-4xl font-extrabold text-center text-gray-800 mb-8">Login to Your Account</h1>
+        @if (session('success'))
+            <div class="bg-green-100 text-green-700 p-2 rounded mb-4 text-center">
+                {{ session('success') }}
+            </div>
+        @endif
 
+        @if ($errors->any())
+            <div class="bg-red-100 text-red-700 p-2 rounded mb-4 text-center">
+                {{ $errors->first() }}
+            </div>
+        @endif
         <!-- Login Form -->
-        <form id="login-form" class="space-y-6">
+        <form id="login-form" class="space-y-6" method="POST" action="{{ route('login.submit') }}">
+            @csrf
             <div>
-                <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email or Username</label>
-                <input type="text" id="email" name="email" required
+                <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                <input type="text" id="email" name="user_email" required
                        class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500 sm:text-sm">
             </div>
             <div>
