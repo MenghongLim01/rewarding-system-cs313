@@ -82,7 +82,16 @@ class UserController extends Controller
     {
         return view('user.history');
     }
+    public function logout(Request $request)
+    {
+        Auth::guard('user')->logout();
 
+        // Invalidate and regenerate session
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('login');
+    }
 
 
 

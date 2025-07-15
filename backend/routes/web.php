@@ -23,7 +23,7 @@ use App\Http\Controllers\UserController;
         Route::get('/dashboard', 'dashboard')->name('dashboard');
         Route::get('/profile', 'profile')->name('profile');
         // Add more routes here
-        
+        Route::post('/logout', [UserController::class, 'logout'])->name('user.logout');
         Route::get('/history', [UserController::class, 'history'])->name('user.history');
     });
 
