@@ -35,6 +35,7 @@ class Kernel extends HttpKernel
 
     protected $routeMiddleware = [
         'auth' => \App\Http\Middleware\Authenticate::class,
+        // 'staff' => \App\Http\Middleware\StaffMiddleware::class,
         // 'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         // add other middleware as needed
     ];

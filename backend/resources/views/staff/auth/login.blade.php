@@ -85,7 +85,7 @@
 <body class="bg-gray-100 flex items-center justify-center min-h-screen font-sans">
 
     <div class="bg-white shadow-lg rounded-lg p-8 w-full max-w-md">
-        <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">Admin Login</h2>
+        <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">Staff Login</h2>
 
         <!-- Show validation or auth errors -->
         @if ($errors->any())
@@ -97,18 +97,18 @@
         @endif
 
         <!-- Login Form -->
-        <form method="POST" action="{{ route('admin.login.submit') }}" class="space-y-5">
+        <form method="POST" action="{{ route('staff.login.submit') }}" class="space-y-5">
             @csrf
 
             <div>
-                <label for="admin_email" class="block text-sm font-medium text-gray-700">Email</label>
-                <input type="email" name="admin_email" id="admin_email" required
+                <label for="staff_email" class="block text-sm font-medium text-gray-700">Email</label>
+                <input type="email" name="staff_email" id="staff_email" required
                        class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500 sm:text-sm">
             </div>
 
             <div>
                 <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
-                <input type="password" name="admin_pw" id="admin_pw" required
+                <input type="password" name="staff_pw" id="staff_pw" required
                        class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500 sm:text-sm">
             </div>
 

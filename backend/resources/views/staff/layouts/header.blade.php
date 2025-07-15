@@ -17,7 +17,7 @@
             </a>
         </li>
         <li>
-            <form method="POST" action="#">
+            <form method="POST" action="{{ route('staff.logout') }}">
                 @csrf
                 <button type="submit"
                         class="text-red-600 font-medium hover:underline transition duration-300">

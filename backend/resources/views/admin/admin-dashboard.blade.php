@@ -17,7 +17,7 @@
       </div>
       <div class="course-card">
         <div class="course-icon">🧑‍🍳</div>
-        <p>Total Staffs: 9999</p>
+        <p>Total Staffs: {{ number_format($totalStaffs) }}</p>
       </div>
     </div>
     <div class="courses">

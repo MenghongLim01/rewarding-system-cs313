@@ -101,7 +101,7 @@
                     <td>{{ $user->user_email }}</td>
                     <td>{{ $user->company->company_name ?? 'N/A' }}</td>
                     <td>{{ $user->points }}</td>
-                    <td class="text-right">
+                    <!-- <td class="text-right">
                         <a href="{{ route('admin.users.edit', $user->user_id) }}" class="btn-edit">Edit</a>
                         <form id="delete-form-{{ $user->user_id }}" 
                               action="{{ route('admin.users.delete', $user->user_id) }}" 
@@ -113,6 +113,22 @@
                                 Delete
                             </button>
                         </form>
+                    </td> -->
+                    <td class="text-right d-flex">
+                        <a href="{{ route('admin.users.edit', $user->user_id) }}" class="btn btn-sm btn-primary me-2">Edit</a>
+                        <form id="delete-form-{{ $user->user_id }}" 
+                        action="{{ route('admin.users.delete', $user->user_id) }}" 
+                        method="POST" 
+                        lass="d-inline">
+                            @csrf
+                            @method('DELETE')
+                                <a href="#" 
+                                    onclick="if(confirm('Are you sure you want to delete this user?')) document.getElementById('delete-form-{{ $user->user_id }}').submit();"
+                                    class="btn btn-sm btn-danger">
+                                    Delete
+                                </a>
+                            </form>
+
                     </td>
                 </tr>
             @endforeach

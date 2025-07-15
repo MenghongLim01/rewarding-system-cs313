@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use App\Models\User;
 use App\Models\Company;
+use App\Models\Staff;
 
 class AdminController extends Controller
 {
@@ -14,9 +15,10 @@ class AdminController extends Controller
     public function adminDashboard()
     {
          $totalUsers = User::count();
+         $totalStaffs = Staff::count();
          $totalCompanies = Company::count();
         $totalPoints = User::sum('points');
-    return view('admin.admin-dashboard', compact('totalUsers', 'totalPoints', 'totalCompanies'));
+    return view('admin.admin-dashboard', compact('totalUsers', 'totalPoints', 'totalCompanies','totalStaffs'));
     }
     
     public function adminSettings()

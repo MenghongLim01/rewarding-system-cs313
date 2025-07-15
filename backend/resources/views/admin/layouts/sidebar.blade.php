@@ -27,7 +27,7 @@
         <!-- <li><a href="{{ route('admin.logs') }}">View Logs</a></li> -->
         <!-- <li><a href="{{ route('admin.settings') }}">Settings</a></li> -->
         
-        <li><a href="{{ route('staffs') }}">Staffs Management</a></li>
+        <li><a href="{{ route('admin.staff.index') }}">Staffs Management</a></li>
         <li><a href="{{ route('admin.transaction.history') }}">Transaction History</a></li>
 
 

@@ -42,7 +42,11 @@ return [
          'web' => [
         'driver' => 'session',
         'provider' => 'users',
-    ],
+        ],
+        'staff' => [
+            'driver' => 'session',
+            'provider' => 'staff', // This is the provider we'll configure next
+        ],
     ],
 
 
@@ -65,6 +69,10 @@ return [
          'users' => [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
+        ],
+        'staff' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Staff::class,  // Make sure this model points to the Staff model
         ],
     ],
     

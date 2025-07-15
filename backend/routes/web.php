@@ -105,7 +105,12 @@ Route::middleware(['auth:admin'])->group(function () {
         Route::put('/users/{user_id}/update', [AdminController::class, 'updateUser'])->name('admin.users.update');
         Route::delete('/users/{user_id}', [AdminController::class, 'deleteUser'])->name('admin.users.delete');
 
-
+        Route::get('/staff', [StaffController::class, 'index'])->name('admin.staff.index');
+        Route::get('/staff/create', [StaffController::class, 'create'])->name('admin.staff.create');
+        Route::post('/staff', [StaffController::class, 'store'])->name('admin.staff.store');
+        Route::get('/staff/{staff_id}/edit', [StaffController::class, 'edit'])->name('admin.staff.edit');
+        Route::put('/staff/{staff_id}', [StaffController::class, 'update'])->name('admin.staff.update');
+        Route::delete('/staff/{staff_id}', [StaffController::class, 'destroy'])->name('admin.staff.destroy');
 
     });
       
@@ -115,7 +120,9 @@ Route::middleware(['auth:admin'])->group(function () {
 
 Route::prefix('staff')->group(function () {
     // Staff Login (no auth)
-    Route::get('/login', function () {return view('staff.auth.login');})->name('staff.login');
+    Route::get('/login', [StaffController::class, 'showLoginForm'])->name('staff.login.form');
+    Route::post('/login', [StaffController::class, 'login'])->name('staff.login.submit');
+    Route::post('/logout', [StaffController::class, 'logout'])->name('staff.logout');
     Route::get('/process', [StaffController::class, 'processCustomerOrders'])->name('staff.process-customer-orders');
     Route::get('/transaction', [StaffController::class, 'viewTransactionHistory'])->name('staff.transactions'); 
 

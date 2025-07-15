@@ -9,10 +9,9 @@ return new class extends Migration {
         Schema::create('staff', function (Blueprint $table) {
             $table->id('staff_id');
             $table->string('staff_name');
-            $table->string('company_name');
             $table->string('staff_email')->unique();
             $table->string('staff_pw');
-            $table->timestamp('created_at')->useCurrent();
+            $table->timestamps();
         });
     }
     public function down(): void
