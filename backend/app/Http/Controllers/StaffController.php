@@ -258,12 +258,41 @@ class StaffController extends Controller
     }
 
 
-    public function viewTransactionHistory()
+   public function viewTransactionHistory()
     {
-        return view('staff.transaction');
+        $company_id = auth()->guard('staff')->user()->company_id;
+
+        // Fetch both earnings and redemptions
+        $earnings = \App\Models\Order::with('user', 'staff')
+            ->where('company_id', $company_id)
+            ->get()
+            ->map(function ($order) {
+                return [
+                    'user_name'    => $order->user->user_name,
+                    'type'         => 'earn',
+                    'points'       => $order->points_awarded,
+                    'processed_by' => $order->staff->staff_name ?? 'System',
+                    'date'         => $order->created_at,
+                ];
+            });
+
+        $redemptions = \App\Models\Redemption::with('user', 'reward')
+            ->whereHas('user', fn($q) => $q->where('company_id', $company_id))
+            ->get()
+            ->map(function ($redeem) {
+                return [
+                    'user_name'    => $redeem->user->user_name,
+                    'type'         => 'redeem',
+                    'points'       => $redeem->status === 'rejected' ? 0 : -$redeem->point_spent,
+                    'processed_by' => '—', // optional: show staff if you later add staff_id
+                    'date'         => $redeem->created_at,
+                ];
+            });
+
+        $transactions = $earnings->merge($redemptions)->sortByDesc('date')->values();
+
+        return view('staff.transaction', compact('transactions')); // Make sure view name matches!
     }
-
-
 
 
     public function showRedemptions()

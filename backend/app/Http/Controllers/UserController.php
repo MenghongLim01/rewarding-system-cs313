@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Redemption;
 use App\Models\Reward;
-
+use App\Models\Order;
 
 class UserController extends Controller
 {
@@ -120,8 +120,45 @@ class UserController extends Controller
 
     public function history()
     {
-        return view('user.history');
+        $user = auth()->guard('user')->user();
+
+        $redemptions = Redemption::with('reward')
+            ->where('user_id', $user->user_id)
+            ->get();
+
+        $orders = Order::where('user_id', $user->user_id)->get();
+
+        $history = collect();
+
+        foreach ($redemptions as $redemption) {
+            $points = ($redemption->status === 'rejected') 
+                ? $redemption->point_spent  // return points as +
+                : -$redemption->point_spent; // deduct as -
+
+            $history->push([
+                'timestamp' => $redemption->created_at,
+                'title' => $redemption->reward->reward_name ?? 'Reward',
+                'type' => 'redeem',
+                'points' => $points,
+                'status' => $redemption->status,
+            ]);
+        }
+
+        foreach ($orders as $order) {
+            $history->push([
+                'timestamp' => $order->created_at,
+                'title' => 'Order Purchase',
+                'type' => 'earn',
+                'points' => $order->points_awarded,
+                'status' => 'earned',
+            ]);
+        }
+
+        $sortedHistory = $history->sortByDesc('timestamp')->values();
+
+        return view('user.history', ['history' => $sortedHistory]);
     }
+
     public function logout(Request $request)
     {
         Auth::guard('user')->logout();

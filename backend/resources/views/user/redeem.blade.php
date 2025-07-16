@@ -48,30 +48,32 @@
         <h1 class="text-4xl font-extrabold text-center text-gray-800 mb-12">Redeem Your Rewards 🎁</h1>
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
             @foreach($rewards as $reward)
-            <div class="bg-white p-6 rounded-xl shadow-md flex flex-col items-center text-center border hover:shadow-xl transition duration-300">
-                <img src="{{ asset('storage/' . $reward->reward_image) }}"
-                     alt="Reward Image"
-                     class="w-[350px] h-[200px] mb-6 object-cover rounded shadow-md" />
+                @if($reward->reward_stock > 0)
+                    <div class="bg-white p-6 rounded-xl shadow-md flex flex-col items-center text-center border hover:shadow-xl transition duration-300">
+                        <img src="{{ asset('storage/' . $reward->reward_image) }}"
+                            alt="Reward Image"
+                            class="w-[350px] h-[200px] mb-6 object-cover rounded shadow-md" />
 
-                <div class="mb-4">
-                    <p class="font-semibold text-gray-800">{{ $reward->reward_name }}</p>
-                    <p class="text-sm text-gray-600">{{ $reward->reward_desc }}</p>
-                    <p class="text-sm text-gray-600">Available Stocks:{{ $reward->reward_stock }} </p>
-                    <p class="text-sm text-red-600">Require: {{ $reward->point_required }} points</p>
-                </div>
+                        <div class="mb-4">
+                            <p class="font-semibold text-gray-800">{{ $reward->reward_name }}</p>
+                            <p class="text-sm text-gray-600">{{ $reward->reward_desc }}</p>
+                            <p class="text-sm text-gray-600">Available Stocks: {{ $reward->reward_stock }}</p>
+                            <p class="text-sm text-red-600">Require: {{ $reward->point_required }} points</p>
+                        </div>
 
-                <button
-                    onclick="openRedeemModal(
-                        '{{ $reward->reward_name }}',
-                        '{{ $reward->reward_desc }}',
-                        '{{ $reward->point_required }}',
-                        '{{ asset('storage/' . $reward->reward_image) }}',
-                        '{{ $reward->reward_id }}'
-                    )"
-                    class="border border-purple-600 text-purple-600 px-4 py-1 rounded-full text-sm font-medium hover:bg-purple-600 hover:text-white transition duration-200">
-                    Redeem Now
-                </button>
-            </div>
+                        <button
+                            onclick="openRedeemModal(
+                                '{{ $reward->reward_name }}',
+                                '{{ $reward->reward_desc }}',
+                                '{{ $reward->point_required }}',
+                                '{{ asset('storage/' . $reward->reward_image) }}',
+                                '{{ $reward->reward_id }}'
+                            )"
+                            class="border border-purple-600 text-purple-600 px-4 py-1 rounded-full text-sm font-medium hover:bg-purple-600 hover:text-white transition duration-200">
+                            Redeem Now
+                        </button>
+                    </div>
+                @endif
             @endforeach
         </div>
     </div>

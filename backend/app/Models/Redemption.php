@@ -27,5 +27,9 @@ class Redemption extends Model
     {
         return $this->belongsTo(Reward::class, 'reward_id');
     }
+    public function staff()
+    {
+        return $this->belongsTo(\App\Models\Staff::class, 'staff_id', 'staff_id');
+    }
     
 }
