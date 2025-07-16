@@ -16,7 +16,15 @@
 
 <div class="max-w-4xl mx-auto bg-white p-8 rounded-2xl shadow-xl">
     <h1 class="text-3xl font-bold text-center text-gray-800 mb-8">Customer Order (Staff Panel)</h1>
-
+@if ($errors->any())
+    <div class="mb-6 p-4 bg-red-200 text-red-700 rounded-lg">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
     <form method="POST" action="{{ route('staff.process-order') }}">
         @csrf
         <div class="mb-6">

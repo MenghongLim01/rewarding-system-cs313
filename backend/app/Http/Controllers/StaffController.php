@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Staff;
@@ -133,7 +134,8 @@ class StaffController extends Controller
     }
 
     public function processCustomerOrders(Request $request)
-{
+{   
+    // Log::info('Received request data: ', $request->all());
     // Get the company_id and staff_id of the currently authenticated staff using the 'staff' guard
     $company_id = Auth::guard('staff')->user()->company_id;  // Get the company_id from the authenticated staff
     $staff_id = Auth::guard('staff')->id();  // Get the staff_id from the authenticated staff
@@ -160,7 +162,8 @@ class StaffController extends Controller
     $user = User::find($request->user_id);
     $user->points += $request->points_awarded;
     $user->save();  // Save the updated points
-
+    
+    // Log::info('Order created successfully:', $order->toArray());
     // Return back to the staff dashboard with a success message
     return redirect()->route('staff.process-customer-orders')->with('success', 'Order processed and points awarded!');
 }
