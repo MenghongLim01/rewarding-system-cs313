@@ -1,34 +1,30 @@
 @extends('admin.layouts.layout')
 
 @section('title', 'Admin Companies Management')
-<script src="https://cdn.tailwindcss.com"></script>
+<!-- <script src="https://cdn.tailwindcss.com"></script> -->
 
 @section('content')
 <link rel="stylesheet" href="{{ asset('css/manage-users.css') }}">
 
 <div class="users-container">
     <!-- Header -->
-     <div class="flex items-center justify-between">
-        <h1 class="text-2xl font-semibold text-gray-800">Companies Management 👥</h1>
+     <div class="header">
+        <h1>Company Management👥</h1>
+        <a href="{{ route('admin.dashboard') }}" class="back-link">← Back to Dashboard</a>
     </div>
 
-  <div class="header mb-6 mt-4">
-    <div class="flex items-center justify-between">
-        <button 
-            class="adduser bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out"
-            onclick="window.location.href='/admin/companies/create'">
-            + Add New Company
-        </button>
-    </div>
-
-    <div class="flex justify-end mt-4">
-        <a href="{{ route('admin.dashboard') }}" class="text-blue-600 hover:underline text-sm">← Back to Dashboard</a>
-    </div>
+    <!-- <button class="btn-add-staff" onclick="window.location.href='{{ route('admin.staff.create') }}'">Add New Staff</button> -->
+<button class="btn-add-staff" onclick="window.location.href='{{ route('admin.companies.create') }}'">Add New Company</button>
 </div>
 
 
     <!-- Users Table -->
     <div class="table-wrapper">
+         @if (session('success'))
+        <div class="alert alert-success mb-4 text-green-700 bg-green-100 p-4 rounded">
+        {{ session('success') }}
+        </div>
+        @endif
         <table class="user-table">
             <thead>
                 <tr>

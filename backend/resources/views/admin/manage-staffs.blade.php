@@ -13,6 +13,11 @@
     <button class="btn-add-staff" onclick="window.location.href='{{ route('admin.staff.create') }}'">Add New Staff</button>
 
     <div class="table-wrapper mt-4">
+         @if (session('success'))
+        <div class="alert alert-success mb-4 text-green-700 bg-green-100 p-4 rounded">
+        {{ session('success') }}
+        </div>
+        @endif
         <table class="user-table">
             <thead>
                 <tr>

@@ -22,7 +22,7 @@
       </li>
         <li><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
         <li><a href="{{ route('admin.companies.index') }}">Company Management</a></li>
-        <li><a href="{{ route('admin.rewards') }}">Rewards Management</a></li>
+        <li><a href="{{ route('admin.reward.index') }}">Rewards Management</a></li>
         <li><a href="{{ route('admin.users') }}">Users Management</a></li>
         <!-- <li><a href="{{ route('admin.logs') }}">View Logs</a></li> -->
         <!-- <li><a href="{{ route('admin.settings') }}">Settings</a></li> -->

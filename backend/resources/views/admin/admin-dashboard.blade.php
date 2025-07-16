@@ -32,7 +32,7 @@
 
       <div class="course-card">
         <div class="course-icon">🎁</div>
-        <p>Total Rewards: 875</p>
+        <p>Total Rewards: {{ number_format($totalRewards) }}</p>
       </div>
       <div class="course-card">
         <div class="course-icon">💎</div>

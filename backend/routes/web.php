@@ -7,6 +7,7 @@ use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\CompaniesController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\StaffController;
+use App\Http\Controllers\RewardController;
 
 
 /*
@@ -111,6 +112,19 @@ Route::middleware(['auth:admin'])->group(function () {
         Route::get('/staff/{staff_id}/edit', [StaffController::class, 'edit'])->name('admin.staff.edit');
         Route::put('/staff/{staff_id}', [StaffController::class, 'update'])->name('admin.staff.update');
         Route::delete('/staff/{staff_id}', [StaffController::class, 'destroy'])->name('admin.staff.destroy');
+
+        Route::get('/manage-reward', [RewardController::class, 'manageReward'])->name('admin.reward.index');
+        Route::get('/rewards/create', [RewardController::class, 'create'])->name('admin.reward.create');
+        Route::post('/rewards/store', [RewardController::class, 'store'])->name('admin.reward.store');
+        // View a specific reward's details
+        Route::get('/rewards/{reward_id}', [RewardController::class, 'show'])->name('admin.reward.show');
+    
+        // Edit a reward
+        Route::get('/rewards/{reward_id}/edit', [RewardController::class, 'edit'])->name('admin.reward.edit');
+        Route::put('/rewards/{reward_id}', [RewardController::class, 'update'])->name('admin.reward.update');
+    
+        // Delete a reward
+        Route::delete('/rewards/{reward_id}', [RewardController::class, 'destroy'])->name('admin.reward.destroy');
 
     });
       

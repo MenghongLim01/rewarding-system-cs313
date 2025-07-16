@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\File;
 use App\Models\User;
 use App\Models\Company;
 use App\Models\Staff;
+use App\Models\Reward;
 
 class AdminController extends Controller
 {
@@ -16,9 +17,10 @@ class AdminController extends Controller
     {
          $totalUsers = User::count();
          $totalStaffs = Staff::count();
+         $totalRewards = Reward::count();
          $totalCompanies = Company::count();
         $totalPoints = User::sum('points');
-    return view('admin.admin-dashboard', compact('totalUsers', 'totalPoints', 'totalCompanies','totalStaffs'));
+    return view('admin.admin-dashboard', compact('totalUsers', 'totalPoints', 'totalCompanies','totalStaffs','totalRewards'));
     }
     
     public function adminSettings()
@@ -67,12 +69,14 @@ class AdminController extends Controller
     $request->validate([
         'user_name' => 'required|string|max:255',
         'user_email' => 'required|email|max:255',
+        'company_id' => 'required|exists:companies,company_id',
     ]);
 
     $user = User::where('user_id', $user_id)->firstOrFail(); // ✅ use user_id
 
     $user->user_name = $request->user_name;
     $user->user_email = $request->user_email;
+    $user->company_id = $request->company_id;
     $user->save();
 
     return redirect()->route('admin.users')->with('success', 'User updated successfully!');
@@ -80,9 +84,11 @@ class AdminController extends Controller
 }
     public function editUser($user_id)
     {
-        $user = \App\Models\User::with('company')->findOrFail($user_id);
-        return view('admin.edit-user', compact('user'));
+        $user = User::findOrFail($user_id);
+        $companies = Company::all();
+        return view('admin.edit-user', compact('user','companies'));
     }
+
     public function deleteUser($user_id)
     {
         $user = User::where('user_id', $user_id)->firstOrFail();

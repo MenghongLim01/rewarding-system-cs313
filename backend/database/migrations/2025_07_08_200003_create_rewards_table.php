@@ -7,13 +7,15 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('rewards', function (Blueprint $table) {
-            $table->id('rw_id');
-            $table->string('rw_name');
-            $table->text('rw_desc')->nullable();
+            $table->id('reward_id');
+            $table->foreignId('company_id')->constrained('companies')->onDelete('cascade');
+            $table->string('reward_name');
+            $table->text('reward_desc');
+            $table->integer('reward_stock');
+            $table->string('reward_image')->nullable(); // Path to the image
             $table->integer('point_required');
-            $table->decimal('dis_value', 10, 2)->nullable();
-            $table->boolean('is_active')->default(true);
-            $table->timestamp('created_at')->useCurrent();
+            
+            $table->timestamps();
         });
     }
     public function down(): void
