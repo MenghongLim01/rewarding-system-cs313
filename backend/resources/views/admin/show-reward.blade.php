@@ -7,14 +7,16 @@
 <div class="w-[100px] h-[150px] mx-auto mt-8 p-0 bg-transparent rounded-none text-sm">
     <h1 class="text-base font-semibold text-center text-gray-800 mb-3">Reward Details</h1>
 
-    <!-- Reward Image -->
+   <!-- Reward Image -->
     <div class="flex justify-center mb-2">
         @if ($reward->reward_image)
             <img src="{{ asset('storage/' . $reward->reward_image) }}"
                  alt="{{ $reward->reward_name }}"
-                 class="w-20 h-20 object-contain" />
+                 class="rounded-none"
+                 style="width: 80px; height: 80px; object-fit: cover;" />
         @else
-            <div class="w-20 h-20 bg-gray-100 flex items-center justify-center text-gray-400 text-xs">
+            <div class="flex items-center justify-center bg-gray-100 text-gray-400 text-xs rounded-none"
+                 style="width: 80px; height: 80px;">
                 No Image
             </div>
         @endif

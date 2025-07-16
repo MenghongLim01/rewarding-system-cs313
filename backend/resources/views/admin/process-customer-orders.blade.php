@@ -43,7 +43,7 @@
       </div>
       <div class="flex justify-between items-center mb-2">
         <label for="manualPoints" class="text-lg font-semibold text-gray-800">Points to Award:</label>
-        <input type="number" id="manualPoints" value="0" min="0" step="1"
+        <input type="number" id="manualPoints" name="reward_points" value="0" min="0" step="1"
                class="w-32 text-right p-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500 text-green-700 font-bold">
       </div>
     </div>
