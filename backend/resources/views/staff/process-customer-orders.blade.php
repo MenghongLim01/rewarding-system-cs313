@@ -17,44 +17,49 @@
 <div class="max-w-4xl mx-auto bg-white p-8 rounded-2xl shadow-xl">
     <h1 class="text-3xl font-bold text-center text-gray-800 mb-8">Customer Order (Staff Panel)</h1>
 
-    <div class="mb-6">
-        <label class="block text-gray-700 font-semibold mb-2">Company:</label>
-        <select disabled class="w-full p-3 border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed">
-            <option selected>Company A</option>
-        </select>
-    </div>
-
-    <div class="mb-6">
-        <label for="customerId" class="block font-medium mb-2">Customer ID/Phone/Email:</label>
-        <div class="flex gap-4">
-            <input id="customerId" type="text" placeholder="e.g. john@example.com" class="flex-grow p-3 border rounded-md" />
-            <button id="checkCustomerBtn" class="bg-green-600 text-white px-6 py-3 rounded-md hover:bg-green-700">Check</button>
+    <form method="POST" action="{{ route('staff.process-order') }}">
+        @csrf
+        <div class="mb-6">
+            <label class="block text-gray-700 font-semibold mb-2">Company:</label>
+            <select disabled class="w-full p-3 border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed">
+                <option selected>{{ $company->company_name }}</option>
+            </select>
         </div>
-        <p id="customerStatus" class="mt-4 text-center font-medium text-gray-600"></p>
-    </div>
 
-    <div class="mb-6">
-        <h2 class="text-xl font-semibold text-purple-700 mb-3">Order Items</h2>
-        <div id="foodItemsContainer"></div>
-        <button id="addFoodItemBtn" class="w-full mt-4 bg-purple-600 text-white py-2 rounded-md hover:bg-purple-700">Add Food Item</button>
-    </div>
-
-    <div class="border-t pt-4 mt-6">
-        <div class="flex justify-between mb-4 text-lg">
-            <span>Total:</span>
-            <span id="totalCost" class="font-bold text-purple-700">$0.00</span>
+        <div class="mb-6">
+            <label for="user_id" class="block text-gray-700 font-semibold mb-2">Select User</label>
+            <select id="user_id" name="user_id" class="w-full p-3 border border-gray-300 rounded-lg" required>
+                <option value="" disabled selected>-- Choose a User --</option>
+                @foreach($users as $user)
+             <option value="{{ $user->user_id }}">{{ $user->user_name }} - {{ $user->user_email }}</option>
+         @endforeach
+            
+            </select>
         </div>
-        <div class="flex justify-between items-center mb-2">
-            <label for="manualPoints" class="text-lg font-semibold text-gray-800">Points to Award:</label>
-            <input type="number" id="manualPoints" value="0" min="0" step="1"
-                class="w-32 text-right p-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500 text-green-700 font-bold">
-        </div>
-    </div>
 
-    <div class="mt-6 flex gap-4">
-        <button id="processOrderBtn" class="flex-1 bg-indigo-600 text-white py-3 rounded-md hover:bg-indigo-700">Process Order</button>
-        <button id="clearOrderBtn" class="flex-1 bg-gray-400 text-white py-3 rounded-md hover:bg-gray-500">Clear Order</button>
-    </div>
+        <div class="mb-6">
+            <h2 class="text-xl font-semibold text-purple-700 mb-3">Order Items</h2>
+            <div id="foodItemsContainer"></div>
+            <button id="addFoodItemBtn" type="button" class="w-full mt-4 bg-purple-600 text-white py-2 rounded-md hover:bg-purple-700">Add Food Item</button>
+        </div>
+
+        <div class="border-t pt-4 mt-6">
+            <div class="flex justify-between mb-4 text-lg">
+                <span>Total:</span>
+                <span id="totalCost" class="font-bold text-purple-700">$0.00</span>
+            </div>
+            <div class="flex justify-between items-center mb-2">
+                <label for="manualPoints" class="text-lg font-semibold text-gray-800">Points to Award:</label>
+                <input type="number" id="manualPoints" name="points_awarded" value="0" min="0" step="1"
+                    class="w-32 text-right p-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500 text-green-700 font-bold">
+            </div>
+        </div>
+
+        <div class="mt-6 flex gap-4">
+            <button type="submit" id="processOrderBtn" class="flex-1 bg-indigo-600 text-white py-3 rounded-md hover:bg-indigo-700">Process Order</button>
+            <button type="button" id="clearOrderBtn" class="flex-1 bg-gray-400 text-white py-3 rounded-md hover:bg-gray-500">Clear Order</button>
+        </div>
+    </form>
 </div>
 
 <div id="receiptForm" class="max-w-2xl mx-auto bg-white mt-10 p-6 rounded-xl shadow-lg hidden">
@@ -112,32 +117,18 @@
         foodItemsContainer.innerHTML = "";
         totalCostEl.textContent = "$0.00";
         manualPointsEl.value = 0;
-        document.getElementById("customerId").value = "";
-        document.getElementById("customerStatus").textContent = "";
         document.getElementById("receiptForm").classList.add("hidden");
         counter = 0;
         addFoodItem();
     });
 
-    document.getElementById("checkCustomerBtn").addEventListener("click", () => {
-        const id = document.getElementById("customerId").value.trim();
-        const status = document.getElementById("customerStatus");
-        if (!id) {
-            status.textContent = "Please enter a customer ID.";
-            status.className = "text-red-500 text-center mt-4";
-            return;
-        }
-        status.textContent = id.toLowerCase().includes("member") ? "✅ Member found!" : "⚠️ Guest customer.";
-        status.className = "text-green-600 text-center mt-4";
-    });
-
     document.getElementById("processOrderBtn").addEventListener("click", () => {
-        const customer = document.getElementById("customerId").value.trim();
+        const customer = document.getElementById("user_id").value.trim();
         const points = manualPointsEl.value;
         const total = totalCostEl.textContent;
 
         if (!customer) {
-            alert("Please enter a customer ID.");
+            alert("Please select a user.");
             return;
         }
 
@@ -174,4 +165,5 @@
     addFoodItem();
 </script>
 @endpush
+
 @endsection

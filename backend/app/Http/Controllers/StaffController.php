@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Staff;
 use App\Models\Company;
+use App\Models\User;
+use App\Models\Order;
 class StaffController extends Controller
 {
     public function index()
@@ -121,10 +123,67 @@ class StaffController extends Controller
     }
 
 
-    public function processCustomerOrders()
+    public function CustomerOrdersForm()
     {
-        return view('staff.process-customer-orders');
+        $company_id = Auth::guard('staff')->user()->company_id;
+        $users = User::where('company_id', $company_id)->get();
+        $company = Company::find($company_id); 
+        return view('staff.process-customer-orders', compact('users','company'));
     }
+
+    public function processCustomerOrders(Request $request)
+{
+    // Get the company_id and staff_id of the currently authenticated staff using the 'staff' guard
+    $company_id = Auth::guard('staff')->user()->company_id;  // Get the company_id from the authenticated staff
+    $staff_id = Auth::guard('staff')->id();  // Get the staff_id from the authenticated staff
+    $users = User::where('company_id', $company_id)->get();
+    // Validate the form data
+    $request->validate([
+        'user_id' => 'required|exists:users,user_id',  // Ensure the selected user exists
+        'order_items' => 'required|array|min:1',  // Ensure order items are provided
+        'total' => 'required|numeric',  // Ensure total amount is provided
+        'points_awarded' => 'required|integer',  // Ensure points are provided
+    ]);
+
+    // Create the order for the selected user
+    $order = Order::create([
+        'user_id' => $request->user_id,
+        'company_id' => $company_id,
+        'order_items' => json_encode($request->order_items),  // Store order items as JSON
+        'total' => $request->total,
+        'points_awarded' => $request->points_awarded,
+        'staff_id' => $staff_id,  // Add the staff member who processed the order
+    ]);
+
+    // Update the user's points (adding the awarded points)
+    $user = User::find($request->user_id);
+    $user->points += $request->points_awarded;
+    $user->save();  // Save the updated points
+
+    // Return back to the staff dashboard with a success message
+    return redirect()->route('staff.process-customer-orders')->with('success', 'Order processed and points awarded!');
+}
+
+    public function addPoints(Request $request)
+    {
+        // Validate the request
+        $request->validate([
+            'user_id' => 'required|exists:users,user_id',
+            'points' => 'required|integer|min:1',
+        ]);
+
+        // Find the user and add points
+        $user = User::find($request->user_id);
+        $user->points += $request->points;
+        $user->save();
+
+        // Return success message and redirect
+        return redirect()->route('staff.customer-order')->with('success', 'Points added successfully!');
+    }
+
+
+
+
 
     public function viewTransactionHistory()
     {
