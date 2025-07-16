@@ -8,7 +8,6 @@
         display: flex;
         justify-content: space-between;
     }
-
     .hidden {
         display: none;
     }
@@ -16,15 +15,27 @@
 
 <div class="max-w-4xl mx-auto bg-white p-8 rounded-2xl shadow-xl">
     <h1 class="text-3xl font-bold text-center text-gray-800 mb-8">Customer Order (Staff Panel)</h1>
-@if ($errors->any())
-    <div class="mb-6 p-4 bg-red-200 text-red-700 rounded-lg">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
+    
+    @if ($errors->any())
+        <div class="mb-6 p-4 bg-red-200 text-red-700 rounded-lg">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    @if (session('success'))
+        <div class="mb-6 p-4 bg-green-200 text-green-700 rounded-lg">
+            {{ session('success') }}
+        </div>
+    @elseif(session('error'))
+        <div class="mb-6 p-4 bg-red-200 text-red-700 rounded-lg">
+            {{ session('error') }}
+        </div>
+    @endif
+
     <form method="POST" action="{{ route('staff.process-order') }}">
         @csrf
         <div class="mb-6">
@@ -39,9 +50,8 @@
             <select id="user_id" name="user_id" class="w-full p-3 border border-gray-300 rounded-lg" required>
                 <option value="" disabled selected>-- Choose a User --</option>
                 @foreach($users as $user)
-             <option value="{{ $user->user_id }}">{{ $user->user_name }} - {{ $user->user_email }}</option>
-         @endforeach
-            
+                    <option value="{{ $user->user_id }}">{{ $user->user_name }} - {{ $user->user_email }}</option>
+                @endforeach
             </select>
         </div>
 
@@ -63,6 +73,10 @@
             </div>
         </div>
 
+        <!-- Hidden fields to store the order data -->
+        <input type="hidden" id="order_items" name="order_items">
+        <input type="hidden" id="total" name="total">
+
         <div class="mt-6 flex gap-4">
             <button type="submit" id="processOrderBtn" class="flex-1 bg-indigo-600 text-white py-3 rounded-md hover:bg-indigo-700">Process Order</button>
             <button type="button" id="clearOrderBtn" class="flex-1 bg-gray-400 text-white py-3 rounded-md hover:bg-gray-500">Clear Order</button>
@@ -70,6 +84,7 @@
     </form>
 </div>
 
+<!-- Receipt Form -->
 <div id="receiptForm" class="max-w-2xl mx-auto bg-white mt-10 p-6 rounded-xl shadow-lg hidden">
     <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">🧾 Order Receipt</h2>
     <div class="mb-4">
@@ -133,7 +148,7 @@
     document.getElementById("processOrderBtn").addEventListener("click", () => {
         const customer = document.getElementById("user_id").value.trim();
         const points = manualPointsEl.value;
-        const total = totalCostEl.textContent;
+        const total = totalCostEl.textContent.replace('$', '').trim();
 
         if (!customer) {
             alert("Please select a user.");
@@ -153,6 +168,9 @@
             alert("Please add at least one food item.");
             return;
         }
+
+        document.getElementById('order_items').value = JSON.stringify(items); // Store as JSON
+        document.getElementById('total').value = total;
 
         document.getElementById("receiptCustomer").textContent = customer;
         document.getElementById("receiptDate").textContent = new Date().toLocaleString();

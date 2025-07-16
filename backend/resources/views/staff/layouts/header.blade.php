@@ -13,6 +13,12 @@
         <li>
             <a href="{{ route('staff.transactions') }}"
                class="text-gray-700 hover:text-indigo-600 font-medium transition duration-300">
+                Order History
+            </a>
+        </li>
+        <li>
+            <a href="{{ route('staff.transactions') }}"
+               class="text-gray-700 hover:text-indigo-600 font-medium transition duration-300">
                 Transaction History
             </a>
         </li>
