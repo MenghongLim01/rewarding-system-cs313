@@ -4,10 +4,10 @@
 
 @section('content')
 
-<div class="container-fluid py-4">
+<div class="container-fluid" >
     <div class="row justify-content-center">
-        <div class="col-md-6 col-lg-5 col-xl-4">
-            <div class="card shadow-lg border-0 rounded-3 overflow-hidden">
+        <div class="col-md-6 col-lg-5 col-xl-4" style="padding: 2rem, 6rem, 2rem, 6rem; width: 60%">
+            <div class="card shadow-lg  border-0 rounded-3 overflow-hidden" >
                 <!-- Card Header -->
                 <div class="card-header bg-gradient-primary text-white text-center py-3 border-0">
                     <h1 class="h4 mb-0 fw-semibold">Reward Details</h1>
