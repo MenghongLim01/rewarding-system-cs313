@@ -7,6 +7,9 @@ use App\Models\Company;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Redemption;
+use App\Models\Reward;
+
 
 class UserController extends Controller
 {
@@ -102,10 +105,6 @@ class UserController extends Controller
     }
 
 
-
-
-
-
     // view
     public function index()
     {
@@ -150,5 +149,36 @@ class UserController extends Controller
         $user->load('company'); // ✅ now it's safe to call
         return view('user.profile', compact('user'));
     }
+
+
+
+    public function redeemReward(Request $request)
+    {
+        $request->validate([
+            'reward_id' => 'required|exists:rewards,reward_id', // <-- fix validation
+        ]);
+
+        $user = auth()->guard('user')->user();
+
+        $reward = \App\Models\Reward::where('reward_id', $request->reward_id)->firstOrFail(); // <-- fix lookup
+
+        if ($user->points < $reward->point_required) {
+            return response()->json(['status' => 'error', 'message' => 'Not enough points']);
+        }
+
+        $user->points -= $reward->point_required;
+        $user->save();
+
+        \App\Models\Redemption::create([
+            'user_id' => $user->user_id,
+            'reward_id' => $reward->reward_id, // <-- fix reference
+            'point_spent' => $reward->point_required,
+            'status' => 'pending',
+            'created_at' => now(),
+        ]);
+
+        return response()->json(['status' => 'success', 'message' => 'Reward redemption submitted. Awaiting staff approval.']);
+    }
+
 
 }

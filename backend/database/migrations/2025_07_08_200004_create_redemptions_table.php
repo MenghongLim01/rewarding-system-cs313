@@ -10,7 +10,7 @@ return new class extends Migration {
             $table->id('red_id');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('staff_id')->nullable();
-            $table->unsignedBigInteger('rw_id');
+            $table->unsignedBigInteger('reward_id');
             $table->integer('point_spent');
             $table->string('status');
             $table->timestamp('created_at')->useCurrent();

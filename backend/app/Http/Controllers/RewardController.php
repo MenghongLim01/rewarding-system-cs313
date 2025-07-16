@@ -118,11 +118,15 @@ class RewardController extends Controller
 }
 
 
-public function showRewards()
-{
-    $rewards = Reward::all(); // or paginate if you want
-    return view('user.redeem', compact('rewards'));
-}
+    public function showRewards()
+    {
+        $user = auth()->guard('user')->user();
+        if (!$user || !$user->company_id) {
+            return redirect()->route('dashboard')->withErrors('Your account is not associated with any company.');
+        }
+        $rewards = Reward::where('company_id', $user->company_id)->get();
 
+        return view('user.redeem', compact('rewards', 'user'));
+    }
 
 }

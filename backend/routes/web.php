@@ -8,7 +8,7 @@ use App\Http\Controllers\CompaniesController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\RewardController;
-
+use App\Http\Controllers\Redemption;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,7 +30,7 @@ use App\Http\Controllers\RewardController;
         Route::get('/history', [UserController::class, 'history'])->name('user.history');
         // Route::get('/redeem', [UserController::class, 'showRewards'])->name('user.redeem');
         Route::get('/rewards/redeem', [RewardController::class, 'showRewards'])->name('rewards.redeem');
-
+        Route::post('/redeem-reward', [UserController::class, 'redeemReward'])->name('user.rewards.redeem');
         Route::get('/profile', [UserController::class, 'profile'])->name('user.profile');
     });
 
@@ -69,9 +69,6 @@ Route::prefix('admin')->group(function () {
 */
 
 Route::get('/process-customer-orders', [AdminController::class, 'processCustomerOrders'])->name('process-customer-orders');
-
-
-// without Authentication
 
 Route::get('/admin/login', [AdminAuthController::class, 'showLoginForm'])->name('admin.login');
 Route::post('/admin/login', [AdminAuthController::class, 'login'])->name('admin.login.submit');
@@ -150,6 +147,11 @@ Route::prefix('staff')->group(function () {
         Route::get('/customer-order', [StaffController::class, 'CustomerOrdersForm'])->name('staff.process-customer-orders');
         Route::post('/process-order', [StaffController::class, 'processCustomerOrders'])->name('staff.process-order');
         Route::get('/order-history', [StaffController::class, 'orderHistory'])->name('staff.order-history');
+        // web.php or staff route group
+         Route::get('/redemptions', [StaffController::class, 'showRedemptions'])->name('staff.redemptions');
+        Route::post('/redemptions/{id}/approve', [StaffController::class, 'approve'])->name('staff.redemptions.approve');
+        Route::post('/redemptions/{id}/reject', [StaffController::class, 'reject'])->name('staff.redemptions.reject');
+        Route::get('/reward-inventory', [StaffController::class, 'rewardInventory'])->name('staff.reward.inventory');
     });
 });
 

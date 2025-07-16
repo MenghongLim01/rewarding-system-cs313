@@ -9,6 +9,9 @@ use App\Models\Company;
 use App\Models\User;
 use App\Models\Order;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Redemption;
+use App\Models\Reward;
+
 class StaffController extends Controller
 {
     public function index()
@@ -134,60 +137,60 @@ class StaffController extends Controller
     }
 
    public function processCustomerOrders(Request $request)
-{
-    // Validate the form data
-    $request->validate([
-        'user_id' => 'required|exists:users,user_id',  // Ensure the selected user exists
-        'order_items' => 'required|string',  // Accept order_items as a string (JSON)
-        'total' => 'required|numeric',  // Ensure total amount is provided
-        'points_awarded' => 'required|integer',  // Ensure points are provided
-    ]);
+    {
+        // Validate the form data
+        $request->validate([
+            'user_id' => 'required|exists:users,user_id',  // Ensure the selected user exists
+            'order_items' => 'required|string',  // Accept order_items as a string (JSON)
+            'total' => 'required|numeric',  // Ensure total amount is provided
+            'points_awarded' => 'required|integer',  // Ensure points are provided
+        ]);
 
-    // Decode the order_items JSON string into an array
-    $order_items = json_decode($request->order_items, true);
+        // Decode the order_items JSON string into an array
+        $order_items = json_decode($request->order_items, true);
 
-    // Get the company_id and staff_id of the currently authenticated staff using the 'staff' guard
-    $company_id = Auth::guard('staff')->user()->company_id;  // Get the company_id from the authenticated staff
-    $staff_id = Auth::guard('staff')->id();  // Get the staff_id from the authenticated staff
+        // Get the company_id and staff_id of the currently authenticated staff using the 'staff' guard
+        $company_id = Auth::guard('staff')->user()->company_id;  // Get the company_id from the authenticated staff
+        $staff_id = Auth::guard('staff')->id();  // Get the staff_id from the authenticated staff
 
-    // Create the order for the selected user
-    $order = Order::create([
-        'user_id' => $request->user_id,
-        'company_id' => $company_id,
-        'order_items' => $order_items,  // Store order items as an array
-        'total' => $request->total,
-        'points_awarded' => $request->points_awarded,
-        'staff_id' => $staff_id,  // Add the staff member who processed the order
-    ]);
+        // Create the order for the selected user
+        $order = Order::create([
+            'user_id' => $request->user_id,
+            'company_id' => $company_id,
+            'order_items' => $order_items,  // Store order items as an array
+            'total' => $request->total,
+            'points_awarded' => $request->points_awarded,
+            'staff_id' => $staff_id,  // Add the staff member who processed the order
+        ]);
 
-    // Update the user's points (adding the awarded points)
-    $user = User::find($request->user_id);
-    $user->points += $request->points_awarded;
-    $user->save();  // Save the updated points
-    
-    // Return back to the staff dashboard with a success message
-    return redirect()->route('staff.process-customer-orders')->with('success', 'Order processed and points awarded!');
-}
-//     public function orderHistory()
-// {
-//     $company_id = Auth::guard('staff')->user()->company_id; // Get the company ID from the authenticated staff
-//     $orders = Order::where('company_id', $company_id)->with(['user', 'staff'])->get(); // Get orders for the staff's company
+        // Update the user's points (adding the awarded points)
+        $user = User::find($request->user_id);
+        $user->points += $request->points_awarded;
+        $user->save();  // Save the updated points
+        
+        // Return back to the staff dashboard with a success message
+        return redirect()->route('staff.process-customer-orders')->with('success', 'Order processed and points awarded!');
+    }
+    //     public function orderHistory()
+    // {
+    //     $company_id = Auth::guard('staff')->user()->company_id; // Get the company ID from the authenticated staff
+    //     $orders = Order::where('company_id', $company_id)->with(['user', 'staff'])->get(); // Get orders for the staff's company
 
-//     return view('staff.order-history', compact('orders'));
-// }
-public function orderHistory()
-{
-    // Get the company_id for the currently authenticated staff
-    $company_id = Auth::guard('staff')->user()->company_id;
+    //     return view('staff.order-history', compact('orders'));
+    // }
+    public function orderHistory()
+    {
+        // Get the company_id for the currently authenticated staff
+        $company_id = Auth::guard('staff')->user()->company_id;
 
-    // Fetch orders, eager load user and staff relationships
-    $orders = Order::where('company_id', $company_id)
-                    ->with(['user', 'staff']) // eager load relationships
-                    ->get(); 
+        // Fetch orders, eager load user and staff relationships
+        $orders = Order::where('company_id', $company_id)
+                        ->with(['user', 'staff']) // eager load relationships
+                        ->get(); 
 
-    // Pass the orders to the view
-    return view('staff.order-history', compact('orders'));
-}
+        // Pass the orders to the view
+        return view('staff.order-history', compact('orders'));
+    }
 
 
 
@@ -259,7 +262,74 @@ public function orderHistory()
     {
         return view('staff.transaction');
     }
+
+
+
+
+    public function showRedemptions()
+    {
+        $staff = auth()->guard('staff')->user(); // get logged-in staff
+
+        $redemptions = Redemption::where('status', 'pending')
+            ->whereHas('user', function ($query) use ($staff) {
+                $query->where('company_id', $staff->company_id); // filter by same company
+            })
+            ->with(['user', 'reward'])
+            ->get();
+
+        return view('staff.redemptions', compact('redemptions'));
+    }
+
+    public function approve($id)
+    {
+        $redemption = Redemption::findOrFail($id);
+        if ($redemption->status !== 'pending') {
+            return back()->with('error', 'This redemption has already been processed.');
+        }
+        $redemption->status = 'approved';
+        $redemption->staff_id = auth()->guard('staff')->user()->staff_id;
+        $redemption->save();
+
+        // Decrement reward stock
+        $reward = $redemption->reward;
+        if ($reward && $reward->reward_stock > 0) {
+            $reward->reward_stock -= 1;
+            $reward->save();
+        }
+
+        return back()->with('success', 'Redemption approved and reward stock updated.');
+    }
+
+    public function reject($id)
+    {
+        $redemption = Redemption::findOrFail($id);
+        $redemption->status = 'rejected';
+        $redemption->staff_id = auth()->guard('staff')->user()->staff_id;
+        $redemption->save();
+
+        // Refund points to user
+        $user = $redemption->user;
+        if ($user) {
+            $user->points += $redemption->point_spent;
+            $user->save();
+        }
+
+        return back()->with('success', 'Redemption rejected and points refunded.');
+    }
+
+    public function rewardInventory()
+    {
+        $staff = Auth::guard('staff')->user(); 
+        // $rewards = Reward::with('company')->get(); // or paginate if many
+        $rewards = Reward::with('company')
+            ->where('company_id', $staff->company_id)
+            ->get();
+        return view('staff.reward-inventory', compact('rewards'));
+    }
+
+
+
 }
-    
+
 
 

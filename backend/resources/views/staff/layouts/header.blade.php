@@ -12,7 +12,7 @@
             </a>
         </li>
         <li>
-            <a href="#"
+            <a href="{{ route('staff.redemptions') }}"
                class="text-gray-700 hover:text-indigo-600 font-medium transition duration-300">
                 Redeem Requests
             </a>
@@ -23,10 +23,23 @@
                 Order History
             </a>
         </li>
+         <li>
+            <a href="{{ route('staff.reward.inventory') }}"
+               class="text-gray-700 hover:text-indigo-600 font-medium transition duration-300">
+                Reward Inventory
+            </a>
+        </li>
         <li>
             <a href="{{ route('staff.transactions') }}"
                class="text-gray-700 hover:text-indigo-600 font-medium transition duration-300">
                 Transaction History
+            </a>
+        </li>
+
+        <li>
+            <a href="{{ route('staff.profile') }}"
+               class="text-gray-700 hover:text-indigo-600 font-medium transition duration-300">
+                Profile
             </a>
         </li>
         <li>
