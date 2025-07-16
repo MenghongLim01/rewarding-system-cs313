@@ -54,7 +54,7 @@
                        class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500 sm:text-sm">
                 @if ($reward->reward_image)
                     <div class="mt-2">
-                        <img src="{{ asset('storage/' . $reward->reward_image) }}" alt="Current Reward Image" class="w-32 h-32 object-cover rounded-lg shadow-md">
+                        <img src="{{ asset('storage/' . $reward->reward_image) }}" alt="Current Reward Image" class="w-32 h-32 object-cover rounded-lg shadow-md"style="width: 120px; height: 120px; object-fit: cover;">
                     </div>
                 @endif
             </div>

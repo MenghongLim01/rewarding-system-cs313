@@ -104,7 +104,7 @@ class RewardController extends Controller
     }
 
     public function destroy($reward_id)
-    {
+{
         $reward = Reward::findOrFail($reward_id);
 
         // Delete the image if it exists
@@ -115,6 +115,14 @@ class RewardController extends Controller
         $reward->delete();  // Delete the reward from the database
 
         return redirect()->route('admin.reward.index')->with('success', 'Reward deleted successfully!');
-    }
+}
+
+
+public function showRewards()
+{
+    $rewards = Reward::all(); // or paginate if you want
+    return view('user.redeem', compact('rewards'));
+}
+
 
 }

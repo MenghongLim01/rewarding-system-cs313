@@ -5,20 +5,29 @@
 @section('content')
 
 
-<h1 class="text-4xl font-extrabold text-center text-gray-800 mb-8">Welcome, User! 👋</h1>
+<h1 class="text-4xl font-extrabold text-center text-gray-800 mb-8">Welcome, {{ Auth::guard('user')->user()->user_name }}👋</h1>
 
 <!-- User Information and Points Balance -->
 <div class="w-[80%] mx-auto">
     <div class="bg-gradient-to-r from-purple-600 to-indigo-700 text-white p-6 rounded-lg shadow-md mb-8 flex flex-col md:flex-row items-center justify-between">
         <div class="flex items-center mb-4 md:mb-0">
-            <img src="https://placehold.co/60x60/8B5CF6/FFFFFF?text=U" alt="User Profile" class="rounded-full border-2 border-white mr-4">
+            <img 
+                src="{{ Auth::guard('user')->user()->profile_image 
+                    ? asset('storage/' . Auth::guard('user')->user()->profile_image) 
+                    : 'https://placehold.co/60x60/8B5CF6/FFFFFF?text=U' }}" 
+                alt="User Profile" 
+                class="w-16 h-16 rounded-full border-2 border-white mr-4 object-cover"
+            >
             <div>
-                <p class="text-xl font-semibold">John Doe</p>
-                <p class="text-sm opacity-90">john.doe@example.com</p>
+                <p class="text-xl font-semibold">{{ Auth::guard('user')->user()->user_name }}</p>
+                <p class="text-sm opacity-90">{{ Auth::guard('user')->user()->user_email }}</p>
+                <p class="text-sm text-gray-300 mt-1">Company: {{ Auth::guard('user')->user()->company->company_name ?? 'N/A' }}</p>
             </div>
         </div>
         <div class="text-right">
-            <span class="text-3xl font-bold">Your Points: <span id="user-points">1500</span></span>
+            <span class="text-3xl font-bold">
+                Your Points: <span id="user-points">{{ Auth::guard('user')->user()->points ?? 0 }}</span>
+            </span>
             <p class="text-sm opacity-90 mt-1">Points available for redemption</p>
         </div>
     </div>

@@ -28,7 +28,9 @@ use App\Http\Controllers\RewardController;
         // Add more routes here
         Route::post('/logout', [UserController::class, 'logout'])->name('user.logout');
         Route::get('/history', [UserController::class, 'history'])->name('user.history');
-        Route::get('/redeem', [UserController::class, 'redeem'])->name('user.redeem');
+        // Route::get('/redeem', [UserController::class, 'showRewards'])->name('user.redeem');
+        Route::get('/rewards/redeem', [RewardController::class, 'showRewards'])->name('rewards.redeem');
+
         Route::get('/profile', [UserController::class, 'profile'])->name('user.profile');
     });
 
@@ -140,14 +142,14 @@ Route::prefix('staff')->group(function () {
    
     Route::middleware(['auth:staff'])->group(function () {
         Route::post('/logout', [StaffController::class, 'logout'])->name('staff.logout');
-        Route::get('/customer-order', [StaffController::class, 'CustomerOrdersForm'])->name('staff.process-customer-orders');
-        // Route::post('/add-points', [StaffController::class, 'processCustomerOrders'])->name('staff.process-oder');
-        Route::post('/process-order', [StaffController::class, 'processCustomerOrders'])->name('staff.process-order');
-
         Route::get('/transaction', [StaffController::class, 'viewTransactionHistory'])->name('staff.transactions'); 
 
         Route::get('/profile', [StaffController::class, 'profile'])->name('staff.profile');
         Route::put('/profile', [StaffController::class, 'updateProfile'])->name('staff.profile.update');
+
+        Route::get('/customer-order', [StaffController::class, 'CustomerOrdersForm'])->name('staff.process-customer-orders');
+        Route::post('/process-order', [StaffController::class, 'processCustomerOrders'])->name('staff.process-order');
+        Route::get('/order-history', [StaffController::class, 'orderHistory'])->name('staff.order-history');
     });
 });
 

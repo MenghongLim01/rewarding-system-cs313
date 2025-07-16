@@ -168,24 +168,45 @@ class StaffController extends Controller
     // Return back to the staff dashboard with a success message
     return redirect()->route('staff.process-customer-orders')->with('success', 'Order processed and points awarded!');
 }
+//     public function orderHistory()
+// {
+//     $company_id = Auth::guard('staff')->user()->company_id; // Get the company ID from the authenticated staff
+//     $orders = Order::where('company_id', $company_id)->with(['user', 'staff'])->get(); // Get orders for the staff's company
+
+//     return view('staff.order-history', compact('orders'));
+// }
+public function orderHistory()
+{
+    // Get the company_id for the currently authenticated staff
+    $company_id = Auth::guard('staff')->user()->company_id;
+
+    // Fetch orders, eager load user and staff relationships
+    $orders = Order::where('company_id', $company_id)
+                    ->with(['user', 'staff']) // eager load relationships
+                    ->get(); 
+
+    // Pass the orders to the view
+    return view('staff.order-history', compact('orders'));
+}
 
 
-    public function addPoints(Request $request)
-    {
-        // Validate the request
-        $request->validate([
-            'user_id' => 'required|exists:users,user_id',
-            'points' => 'required|integer|min:1',
-        ]);
 
-        // Find the user and add points
-        $user = User::find($request->user_id);
-        $user->points += $request->points;
-        $user->save();
+    // public function addPoints(Request $request)
+    // {
+    //     // Validate the request
+    //     $request->validate([
+    //         'user_id' => 'required|exists:users,user_id',
+    //         'points' => 'required|integer|min:1',
+    //     ]);
 
-        // Return success message and redirect
-        return redirect()->route('staff.customer-order')->with('success', 'Points added successfully!');
-    }
+    //     // Find the user and add points
+    //     $user = User::find($request->user_id);
+    //     $user->points += $request->points;
+    //     $user->save();
+
+    //     // Return success message and redirect
+    //     return redirect()->route('staff.customer-order')->with('success', 'Points added successfully!');
+    // }
 
 
     //profile update

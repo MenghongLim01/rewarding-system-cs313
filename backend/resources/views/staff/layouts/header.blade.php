@@ -4,6 +4,7 @@
     </a>
 
     <ul class="flex space-x-6">
+        
         <li>
             <a href="{{ route('staff.process-customer-orders') }}"
                class="text-gray-700 hover:text-indigo-600 font-medium transition duration-300">
@@ -11,7 +12,13 @@
             </a>
         </li>
         <li>
-            <a href="{{ route('staff.transactions') }}"
+            <a href="#"
+               class="text-gray-700 hover:text-indigo-600 font-medium transition duration-300">
+                Redeem Requests
+            </a>
+        </li>
+        <li>
+            <a href="{{ route('staff.order-history') }}"
                class="text-gray-700 hover:text-indigo-600 font-medium transition duration-300">
                 Order History
             </a>

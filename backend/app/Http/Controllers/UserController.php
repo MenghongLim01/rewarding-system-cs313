@@ -113,6 +113,9 @@ class UserController extends Controller
     }
      public function dashboard()
     {
+        $user = Auth::user();  // Get the currently logged-in user
+        // $company = $user->company;  // Assuming the user has a relationship with the company
+        // $points = $user->points;  // Assuming points is a column in the users table
         return view('user.dashboard'); // Create this Blade view
     }
 

@@ -3,33 +3,60 @@
 @section('title', 'Redeem Rewards')
 
 @section('content')
-<div class="max-w-7xl mx-auto p-6">
+<div class="w-[80%] mx-auto">
+    
+    <div class="bg-gradient-to-r from-purple-600 to-indigo-700 text-white p-6 rounded-lg shadow-md mb-8 flex flex-col md:flex-row items-center justify-between">
+        <div class="flex items-center mb-4 md:mb-0">
+            <img 
+                src="{{ Auth::guard('user')->user()->profile_image 
+                    ? asset('storage/' . Auth::guard('user')->user()->profile_image) 
+                    : 'https://placehold.co/60x60/8B5CF6/FFFFFF?text=U' }}" 
+                alt="User Profile" 
+                class="w-16 h-16 rounded-full border-2 border-white mr-4 object-cover"
+            >
+            <div>
+                <p class="text-xl font-semibold">{{ Auth::guard('user')->user()->user_name }}</p>
+                <!-- <p class="text-sm opacity-90">{{ Auth::guard('user')->user()->user_email }}</p> -->
+                <p class="text-sm text-gray-300 mt-1">Company: {{ Auth::guard('user')->user()->company->company_name ?? 'N/A' }}</p>
+            </div>
+        </div>
+        <div class="text-right">
+            <span class="text-3xl font-bold">
+                Your Points: <span id="user-points">{{ Auth::guard('user')->user()->points ?? 0 }}</span>
+            </span>
+            <p class="text-sm opacity-90 mt-1">Points available for redemption</p>
+        </div>
+    </div>
+
+<div class="max-w-5xl mx-auto p-6">
     <h1 class="text-4xl font-extrabold text-center text-gray-800 mb-12">Redeem Your Rewards 🎁</h1>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
         {{-- Static reward cards --}}
-        @for($i = 0; $i < 6; $i++)
-        <div class="bg-white p-6 rounded-xl shadow-md flex flex-col items-center text-center border hover:shadow-xl transition duration-300">
-            <!-- Static image placeholder (yellow box) -->
-            <img src="https://via.placeholder.com/96x96.png?text=Img" alt="Reward Image"
-                 class="w-24 h-24 mb-6 object-cover rounded shadow-md">
+       @foreach($rewards as $reward)
+<div class="bg-white p-6 rounded-xl shadow-md flex flex-col items-center text-center border hover:shadow-xl transition duration-300">
+    <img src="{{ asset('storage/' . $reward->reward_image) }}"
+         alt="Reward Image"
+         class="w-50 h-30 mb-6 object-cover rounded shadow-md" style="width: 350px; height: 200px; object-fit: cover;"/>
 
-            <!-- Reward Info -->
-            <div class="mb-4">
-                <p class="font-semibold text-gray-800">Reward Name {{ $i + 1 }}</p>
-                <p class="text-sm text-gray-600">Brief description of the reward goes here.</p>
-                <p class="text-sm text-gray-600">Redeem for 500 pts</p>
-            </div>
+    <div class="mb-4">
+        <p class="font-semibold text-gray-800">{{ $reward->reward_name }}</p>
+        <p class="text-sm text-gray-600">{{ $reward->reward_desc }}</p>
+        <p class="text-sm text-gray-600" style="color:red">Require: {{ $reward->point_required}} points</p>
+    </div>
 
-            <!-- Redeem Button -->
-            <button
-                onclick="openRedeemModal('Reward Name {{ $i + 1 }}', 'Brief description of the reward goes here.', 500)"
-                class="border border-purple-600 text-purple-600 px-4 py-1 rounded-full text-sm font-medium hover:bg-purple-600 hover:text-white transition duration-200">
-                Redeem Now
-            </button>
-
-        </div>
-        @endfor
+   <button
+    onclick="openRedeemModal(
+        '{{ $reward->reward_name }}',
+        '{{ $reward->reward_desc }}',
+        '{{ $reward->point_required }}',
+        '{{ asset('storage/' . $reward->reward_image) }}'
+    )"
+    class="border border-purple-600 text-purple-600 px-4 py-1 rounded-full text-sm font-medium hover:bg-purple-600 hover:text-white transition duration-200">
+    Redeem Now
+</button>
+</div>
+@endforeach
     </div>
 </div>
 
@@ -60,11 +87,11 @@
 
 @push('scripts')
 <script>
-    function openRedeemModal(name, description, points) {
+    function openRedeemModal(name, description, points, imageUrl) {
         document.getElementById('modal-name').textContent = name;
         document.getElementById('modal-description').textContent = description;
         document.getElementById('modal-points').textContent = points + ' pts';
-        document.getElementById('modal-img').src = 'https://via.placeholder.com/96x96.png?text=Img';
+        document.getElementById('modal-img').src = imageUrl;
         document.getElementById('redeemModal').classList.remove('hidden');
     }
 
