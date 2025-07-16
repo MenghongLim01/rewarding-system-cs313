@@ -7,6 +7,7 @@ use App\Models\Staff;
 use App\Models\Company;
 use App\Models\User;
 use App\Models\Order;
+use Illuminate\Support\Facades\Storage;
 class StaffController extends Controller
 {
     public function index()
@@ -182,7 +183,50 @@ class StaffController extends Controller
     }
 
 
+    //profile update
+    public function updateProfile(Request $request)
+    {
+        $staff = Auth::guard('staff')->user();
 
+        $request->validate([
+            'staff_name' => 'required|string|max:255',
+            'staff_email' => 'required|email|unique:staff,staff_email,' . $staff->staff_id . ',staff_id',
+            'staff_pw' => 'nullable|string|min:6|confirmed',
+            'profile_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        if ($request->hasFile('profile_image')) {
+            if ($staff->profile_image && Storage::disk('public')->exists($staff->profile_image)) {
+                Storage::disk('public')->delete($staff->profile_image);
+            }
+            $staff->profile_image = $request->file('profile_image')->store('staff_images', 'public');
+        }
+
+        $staff->staff_name = $request->staff_name;
+        $staff->staff_email = $request->staff_email;
+
+        if ($request->filled('staff_pw')) {
+            $staff->staff_pw = bcrypt($request->staff_pw);
+        }
+
+        $staff->save();
+
+        return redirect()->route('staff.profile')->with('success', 'Profile updated successfully.');
+    }
+
+    public function profile()
+    {
+        $staff = Auth::guard('staff')->user();
+
+        if (!$staff) {
+            return redirect()->route('staff.login'); // Ensure staff is logged in
+        }
+
+        // Eager load company if needed
+        $staff->load('company');
+
+        return view('staff.staff-profile', compact('staff'));
+    }
 
 
     public function viewTransactionHistory()

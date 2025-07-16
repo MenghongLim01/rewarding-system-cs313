@@ -24,7 +24,8 @@ class User extends Authenticatable
         'user_email',
         'user_password',
         'points',
-        'company_id'
+        'company_id',
+        'profile_image', // ✅ added profile_image
     ];
 
     /**

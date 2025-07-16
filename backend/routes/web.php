@@ -23,7 +23,8 @@ use App\Http\Controllers\RewardController;
     
     Route::controller(UserController::class)->middleware(['auth:user'])->group(function () {
         Route::get('/dashboard', 'dashboard')->name('dashboard');
-        Route::get('/profile', 'profile')->name('profile');
+        Route::get('/profile', [UserController::class, 'profile'])->name('user.profile');
+        Route::put('/profile', [UserController::class, 'updateProfile'])->name('user.profile.update');
         // Add more routes here
         Route::post('/logout', [UserController::class, 'logout'])->name('user.logout');
         Route::get('/history', [UserController::class, 'history'])->name('user.history');
@@ -144,6 +145,9 @@ Route::prefix('staff')->group(function () {
         Route::post('/process-order', [StaffController::class, 'processCustomerOrders'])->name('staff.process-order');
 
         Route::get('/transaction', [StaffController::class, 'viewTransactionHistory'])->name('staff.transactions'); 
+
+        Route::get('/profile', [StaffController::class, 'profile'])->name('staff.profile');
+        Route::put('/profile', [StaffController::class, 'updateProfile'])->name('staff.profile.update');
     });
 });
 

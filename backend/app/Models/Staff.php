@@ -15,7 +15,8 @@ class Staff extends Authenticatable
         'staff_name',
         'staff_email',
         'staff_pw',
-        'company_id'
+        'company_id',
+        'profile_image', 
     ];
     protected $hidden = [
         'staff_pw', // Hide password when retrieving data

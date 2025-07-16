@@ -66,6 +66,44 @@ class UserController extends Controller
         }
     }
 
+    // Update profile
+    public function updateProfile(Request $request)
+    {
+        $validated = $request->validate([
+            'user_name' => 'required|string|max:255',
+            'user_email' => 'required|email|unique:users,user_email,' . Auth::guard('user')->user()->user_id . ',user_id',
+            'password' => 'nullable|string|min:6|confirmed',
+            'profile_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        try {
+            $user = Auth::guard('user')->user();
+            $user->user_name = $validated['user_name'];
+            $user->user_email = $validated['user_email'];
+
+            if ($request->hasFile('profile_image')) {
+                if ($user->profile_image && Storage::exists('public/' . $user->profile_image)) {
+                    Storage::delete('public/' . $user->profile_image);
+                }
+                $imagePath = $request->file('profile_image')->store('profile_images', 'public');
+                $user->profile_image = $imagePath;
+            }
+
+            if ($request->filled('password')) {
+                $user->user_password = Hash::make($validated['password']);
+            }
+
+            $user->save();
+
+            return redirect()->route('user.profile')->with('success', 'Profile updated successfully.');
+        } catch (\Exception $e) {
+            return back()->withErrors(['update_error' => 'Something went wrong. Please try again.']);
+        }
+    }
+
+
+
+
 
 
     // view
@@ -100,7 +138,14 @@ class UserController extends Controller
 
     public function profile()
     {
-        return view('user.profile');
+        $user = Auth::guard('user')->user(); // ✅ explicitly use 'user' guard
+
+        if (!$user) {
+            return redirect()->route('login'); // fallback
+        }
+
+        $user->load('company'); // ✅ now it's safe to call
+        return view('user.profile', compact('user'));
     }
 
 }
