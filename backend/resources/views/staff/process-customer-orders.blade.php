@@ -58,7 +58,7 @@
         <div class="mb-6">
             <h2 class="text-xl font-semibold text-purple-700 mb-3">Order Items</h2>
             <div id="foodItemsContainer"></div>
-            <button id="addFoodItemBtn" type="button" class="w-full mt-4 bg-purple-600 text-white py-2 rounded-md hover:bg-purple-700">Add Food Item</button>
+            <button id="addFoodItemBtn" type="button" class="w-full mt-4 bg-purple-600 text-white py-2 rounded-md hover:bg-purple-700">Add Item</button>
         </div>
 
         <div class="border-t pt-4 mt-6">

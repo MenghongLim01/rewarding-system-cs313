@@ -3,6 +3,12 @@
 @section('title', 'Reward Plugin System - History')
 
 @section('content')
+
+
+
+
+
+
 <div class="w-[80%] mx-auto">
     <h1 class="text-4xl font-extrabold text-center text-gray-800 mb-8">Transaction History 🧾</h1>
 

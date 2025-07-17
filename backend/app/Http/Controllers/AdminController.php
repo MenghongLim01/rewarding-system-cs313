@@ -9,6 +9,9 @@ use App\Models\User;
 use App\Models\Company;
 use App\Models\Staff;
 use App\Models\Reward;
+use App\Models\Order;
+use App\Models\Redemption;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class AdminController extends Controller
 {
@@ -179,15 +182,59 @@ public function storeUser(Request $request)
 
         return view('admin.process-customer-orders', compact('data'));
     }
-    public function transactionHistory()
+    
+    
+   public function transactionHistory()
     {
-        $data = [
-            'title' => 'Transaction History',
-            'active' => 'transaction-history',
-        ];
+        // ✅ Get all earned points from orders
+        $orderTransactions = Order::with(['user.company', 'staff'])
+            ->select('order_id as txn_id', 'user_id', 'staff_id', 'points_awarded as points', 'created_at')
+            ->get()
+            ->map(function ($item) {
+                return [
+                    'id' => 'O-' . $item->txn_id,
+                    'user_name' => optional($item->user)->user_name ?? 'Unknown',
+                    'staff_name' => optional($item->staff)->staff_name ?? 'Unknown',
+                    'company_name' => optional(optional($item->user)->company)->company_name ?? 'Unknown',
+                    'points' => '+' . $item->points,
+                    'description' => 'Points Earned (Order)',
+                    'date' => $item->created_at,
+                ];
+            });
 
-        // Note the underscore (_) here
-        return view('admin.transaction_history', compact('data'));
+        // ✅ Get all redeemed points from redemptions
+        $redemptionTransactions = Redemption::with(['user.company', 'staff'])
+            ->select('red_id as txn_id', 'user_id', 'staff_id', 'point_spent as points', 'created_at')
+            ->get()
+            ->map(function ($item) {
+                return [
+                    'id' => 'R-' . $item->txn_id,
+                    'user_name' => optional($item->user)->user_name ?? 'Unknown',
+                    'staff_name' => optional($item->staff)->staff_name ?? 'Unknown',
+                    'company_name' => optional(optional($item->user)->company)->company_name ?? 'Unknown',
+                    'points' => '-' . $item->points,
+                    'description' => 'Reward Redeemed',
+                    'date' => $item->created_at,
+                ];
+            });
+
+        // ✅ Combine and sort
+        $merged = $orderTransactions
+            ->merge($redemptionTransactions)
+            ->sortByDesc('date')
+            ->values();
+
+        // ✅ Paginate manually
+        $currentPage = request()->get('page', 1);
+        $perPage = 10;
+        $pagedResults = new LengthAwarePaginator(
+            $merged->slice(($currentPage - 1) * $perPage, $perPage)->values(),
+            $merged->count(),
+            $perPage,
+            $currentPage,
+            ['path' => request()->url(), 'query' => request()->query()]
+        );
+
+        return view('admin.transaction_history', compact('pagedResults'));
     }
-
 }

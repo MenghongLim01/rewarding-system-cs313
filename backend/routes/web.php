@@ -15,13 +15,14 @@ use App\Http\Controllers\Redemption;
 | User Routes
 |--------------------------------------------------------------------------
 */
-    Route::get('/', [UserController::class, 'index'])->name('index');
+    // Route::get('/', [UserController::class, 'index'])->name('index');
     Route::get('/login', [UserController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [UserController::class, 'login'])->name('login.submit');
     Route::get('/register', [UserController::class, 'showRegisterForm'])->name('register');
     Route::post('/register', [UserController::class, 'register'])->name('register.submit');
     
     Route::controller(UserController::class)->middleware(['auth:user'])->group(function () {
+        Route::get('/', 'dashboard')->name('dashboard');
         Route::get('/dashboard', 'dashboard')->name('dashboard');
         Route::get('/profile', [UserController::class, 'profile'])->name('user.profile');
         Route::put('/profile', [UserController::class, 'updateProfile'])->name('user.profile.update');

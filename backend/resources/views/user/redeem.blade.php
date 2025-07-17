@@ -8,6 +8,7 @@
 @endphp
 
 <div class="w-[80%] mx-auto">
+
     <!-- Flash Messages -->
     @if ($errors->any())
         <div class="bg-red-100 text-red-700 border border-red-300 p-4 rounded mb-6">
@@ -46,36 +47,44 @@
     <!-- Rewards -->
     <div class="max-w-5xl mx-auto p-6">
         <h1 class="text-4xl font-extrabold text-center text-gray-800 mb-12">Redeem Your Rewards 🎁</h1>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-            @foreach($rewards as $reward)
-                @if($reward->reward_stock > 0)
-                    <div class="bg-white p-6 rounded-xl shadow-md flex flex-col items-center text-center border hover:shadow-xl transition duration-300">
-                        <img src="{{ asset('storage/' . $reward->reward_image) }}"
-                            alt="Reward Image"
-                            class="w-[350px] h-[200px] mb-6 object-cover rounded shadow-md" />
 
-                        <div class="mb-4">
-                            <p class="font-semibold text-gray-800">{{ $reward->reward_name }}</p>
-                            <p class="text-sm text-gray-600">{{ $reward->reward_desc }}</p>
-                            <p class="text-sm text-gray-600">Available Stocks: {{ $reward->reward_stock }}</p>
-                            <p class="text-sm text-red-600">Require: {{ $reward->point_required }} points</p>
+        @if ($rewards->count() > 0)
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+                @foreach($rewards as $reward)
+                    @if($reward->reward_stock > 0)
+                        <div class="bg-white p-6 rounded-xl shadow-md flex flex-col items-center text-center border hover:shadow-xl transition duration-300">
+                            <img src="{{ asset('storage/' . $reward->reward_image) }}"
+                                alt="Reward Image"
+                                class="w-[350px] h-[200px] mb-6 object-cover rounded shadow-md" />
+
+                            <div class="mb-4">
+                                <p class="font-semibold text-gray-800">{{ $reward->reward_name }}</p>
+                                <p class="text-sm text-gray-600">{{ $reward->reward_desc }}</p>
+                                <p class="text-sm text-gray-600">Available Stock: {{ $reward->reward_stock }}</p>
+                                <p class="text-sm text-red-600">Require: {{ $reward->point_required }} points</p>
+                            </div>
+
+                            <button
+                                onclick="openRedeemModal(
+                                    '{{ $reward->reward_name }}',
+                                    '{{ $reward->reward_desc }}',
+                                    '{{ $reward->point_required }}',
+                                    '{{ asset('storage/' . $reward->reward_image) }}',
+                                    '{{ $reward->reward_id }}',
+                                    '{{ $reward->reward_stock }}'
+                                )"
+                                class="border border-purple-600 text-purple-600 px-4 py-1 rounded-full text-sm font-medium hover:bg-purple-600 hover:text-white transition duration-200">
+                                Redeem Now
+                            </button>
                         </div>
-
-                        <button
-                            onclick="openRedeemModal(
-                                '{{ $reward->reward_name }}',
-                                '{{ $reward->reward_desc }}',
-                                '{{ $reward->point_required }}',
-                                '{{ asset('storage/' . $reward->reward_image) }}',
-                                '{{ $reward->reward_id }}'
-                            )"
-                            class="border border-purple-600 text-purple-600 px-4 py-1 rounded-full text-sm font-medium hover:bg-purple-600 hover:text-white transition duration-200">
-                            Redeem Now
-                        </button>
-                    </div>
-                @endif
-            @endforeach
-        </div>
+                    @endif
+                @endforeach
+            </div>
+        @else
+            <div class="text-center text-gray-500 italic">
+                No rewards available for redemption.
+            </div>
+        @endif
     </div>
 </div>
 
@@ -91,7 +100,7 @@
             <div>
                 <p id="modal-name" class="font-semibold text-gray-800 text-lg"></p>
                 <p id="modal-description" class="text-sm text-gray-600 mt-1"></p>
-                <p class="text-sm text-gray-600">Available Stock: {{ $reward->reward_stock }}</p>
+                <p class="text-sm text-gray-600">Available Stock: <span id="modal-stock"></span></p>
                 <p class="text-sm mt-2"><span class="font-medium text-gray-800">Points Required:</span> <span id="modal-points" class="text-purple-600 font-semibold"></span></p>
             </div>
         </div>
@@ -111,10 +120,11 @@
 
 @push('scripts')
 <script>
-    function openRedeemModal(name, description, points, imageUrl, rewardId) {
+    function openRedeemModal(name, description, points, imageUrl, rewardId, stock) {
         document.getElementById('modal-name').textContent = name;
         document.getElementById('modal-description').textContent = description;
         document.getElementById('modal-points').textContent = points + ' pts';
+        document.getElementById('modal-stock').textContent = stock;
         document.getElementById('modal-img').src = imageUrl;
         document.getElementById('modal-reward-id').value = rewardId;
         document.getElementById('redeemModal').classList.remove('hidden');
